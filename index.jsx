@@ -4,17 +4,21 @@
  */
 
 import { render } from 'preact'
+import { LocationProvider, Router, Route } from 'preact-iso'
+
+import Index from './page/posts.jsx'
 
 function Root()
 {
 RETURN_JSX_BEGIN
-<main class='font-jetbrans_mono text-neutral-900 h-screen'>
-  <div class='px-5 xl:mx-auto xl:w-5xl 2xl:w-7xl min-h-screen shadow-md bg-slate-50
-              space-y-25 space-x-5'>
-    <div class=''>11
-    </div>
-  </div>
-</main>
+<div class='px-5 xl:mx-auto xl:w-5xl 2xl:w-7xl min-h-screen shadow-md
+            bg-slate-50 space-y-25 space-x-5'>
+  <LocationProvider>
+    <Router>
+      <Index path='/'/>
+    </Router>
+  </LocationProvider>
+</div>
 RETURN_JSX_END
 }
 
