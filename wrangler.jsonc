@@ -1,0 +1,21 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+
+{
+   "$schema": "node_modules/wrangler/config-schema.json",
+   "name": "blog-barroit-sh",
+   "compatibility_date": "2025-09-27",
+   "assets": {
+      "directory": "build/static",
+      "html_handling": "drop-trailing-slash",
+      "not_found_handling": "404-page",
+   },
+   "observability": {
+      "enabled": true,
+   },
+   "routes": [
+      {
+         "pattern": "blog.barroit.sh",
+         "custom_domain": true,
+      },
+   ],
+}

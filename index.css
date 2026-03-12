@@ -1,0 +1,42 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * Copyright 2026 Jiamu Sun <barroit@linux.com>
+ */
+
+@import 'tailwindcss';
+
+@import './style/fonts.css';
+
+@theme {
+	--color-miku-cyan: oklch(0.75 0.11 206.57);
+	--color-miku-pink: oklch(0.6805 0.1986 350.19);
+
+	--color-miku-blue: oklch(0.7486 0.1168 187.91);
+	--color-luka-pink: oklch(0.8677 0.0735 7.09);
+
+	--color-rin-orange: oklch(0.7927 0.171 70.67);
+	--color-len-yellow: oklch(0.9089 0.1868 99.73);
+
+	--color-meiko-red: oklch(0.554 0.2273 29.23);
+	--color-kaito-blue: oklch(0.452 0.313214 264.052);
+
+	--color-dark-blue: oklch(0.1063 0.0172 259.54);
+
+	--font-jetbrans_mono: 'JetBrains Mono';
+	--font-x14y20px_score_dozer: 'x14y20pxScoreDozer';
+	--font-x16y32px_grid_gazer: 'x16y32pxGridGazer';
+
+	--font-mono: var(--font-jetbrans_mono);
+}
+
+*, ::before, ::after {
+	@apply motion-reduce:duration-0! motion-reduce:animate-none!;
+}
+
+button, a, .group\/shell {
+	@apply *:cursor-pointer;
+}
+
+button {
+	@apply text-left;
+}

@@ -1,0 +1,46 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * Copyright 2025, 2026 Jiamu Sun <barroit@linux.com>
+ */
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('FONTS_JB_JETBRAINSMONO_REGULAR_WOFF2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('FONTS_JB_JETBRAINSMONO_BOLD_WOFF2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('FONTS_JB_JETBRAINSMONO_ITALIC_WOFF2') format('woff2');
+	font-weight: 400;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('FONTS_JB_JETBRAINSMONO_BOLDITALIC_WOFF2') format('woff2');
+	font-weight: 700;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'x14y20pxScoreDozer';
+	src: url('FONTS_X0Y0PX_X14Y20PXSCOREDOZER_TTF') format('truetype');
+}
+
+@font-face {
+	font-family: 'x16y32pxGridGazer';
+	src: url('FONTS_X0Y0PX_X16Y32PXGRIDGAZER_TTF') format('truetype');
+}

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- SPDX-License-Identifier: LicenseRef-MDM-2.1 -->
+
+<svg version='1.1' width='48' height='48'
+     xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'>
+  <rect x='22' y='4' width='4' height='34' fill='#e8e8e8'/>
+  <rect x='20' y='7' width='2' height='33' fill='#e8e8e8'/>
+  <rect x='26' y='7' width='2' height='33' fill='#e8e8e8'/>
+  <rect x='16' y='14' width='4' height='26' fill='#e8e8e8'/>
+  <rect x='28' y='14' width='4' height='26' fill='#e8e8e8'/>
+  <rect x='3' y='19' width='13' height='4' fill='#e8e8e8'/>
+  <rect x='32' y='19' width='13' height='4' fill='#e8e8e8'/>
+  <rect x='7' y='23' width='9' height='4' fill='#e8e8e8'/>
+  <rect x='32' y='23' width='9' height='4' fill='#e8e8e8'/>
+  <rect x='13' y='27' width='3' height='15' fill='#e8e8e8'/>
+  <rect x='32' y='27' width='3' height='15' fill='#e8e8e8'/>
+  <rect x='11' y='31' width='2' height='11' fill='#e8e8e8'/>
+  <rect x='35' y='31' width='2' height='11' fill='#e8e8e8'/>
+  <rect x='9' y='37' width='2' height='7' fill='#e8e8e8'/>
+  <rect x='37' y='37' width='2' height='7' fill='#e8e8e8'/>
+  <rect x='16' y='40' width='2' height='2' fill='#e8e8e8'/>
+  <rect x='30' y='40' width='2' height='2' fill='#e8e8e8'/>
+  <rect x='7' y='41' width='2' height='3' fill='#e8e8e8'/>
+  <rect x='39' y='41' width='2' height='3' fill='#e8e8e8'/>
+</svg>

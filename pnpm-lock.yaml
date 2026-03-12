@@ -1,0 +1,33 @@
+SPDX-License-Identifier: GPL-3.0-or-later
+
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      preact:
+        specifier: ^10.28.2
+        version: 10.28.2
+    devDependencies:
+      tailwindcss:
+        specifier: ^4.1.18
+        version: 4.1.18
+
+packages:
+
+  preact@10.28.2:
+    resolution: {integrity: sha512-lbteaWGzGHdlIuiJ0l2Jq454m6kcpI1zNje6d8MlGAFlYvP2GO4ibnat7P74Esfz4sPTdM6UxtTwh/d3pwM9JA==}
+
+  tailwindcss@4.1.18:
+    resolution: {integrity: sha512-4+Z+0yiYyEtUVCScyfHCxOYP06L5Ne+JiHhY2IjR2KWMIWhJOYZKLSGZaP5HkZ8+bY0cxfzwDE5uOmzFXyIwxw==}
+
+snapshots:
+
+  preact@10.28.2: {}
+
+  tailwindcss@4.1.18: {}

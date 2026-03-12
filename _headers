@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# https://developer.mozilla.org/en-US/observatory
+#
+divert(-1)
+
+define(SECURITY_HEADER,
+  Cross-Origin-Resource-Policy: cross-origin
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  X-Content-Type-Options: nosniff
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+  Content-Security-Policy: dnl
+    default-src 'none'; frame-ancestors 'none'; connect-src 'self'; dnl
+    script-src-elem 'self' ifdef(`DEV', 'unsafe-inline') dnl
+                    static.cloudflareinsights.com; dnl
+    font-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'
+)
+
+divert(0)dnl
+
+/
+  Cache-Control: no-cache
+
+  SECURITY_HEADER()dnl
+
+/LICENSES/*
+  Cache-Control: public, max-age=31536000, immutable
+
+  SECURITY_HEADER()dnl
+
+  Content-Type: text/plain; charset=utf-8
+
+/*
+  Cache-Control: public, max-age=31536000, immutable
+
+  SECURITY_HEADER
