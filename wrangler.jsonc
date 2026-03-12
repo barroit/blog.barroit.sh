@@ -7,7 +7,7 @@
    "assets": {
       "directory": "build/static",
       "html_handling": "drop-trailing-slash",
-      "not_found_handling": "404-page",
+      "not_found_handling": "single-page-application",
    },
    "observability": {
       "enabled": true,
