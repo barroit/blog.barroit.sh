@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-onchange-src += lib/*.jsx lib/*.js lib/*.m4
+onchange-src += lib/**/*
 
-lib-src := $(wildcard lib/*.jsx lib/*.js)
+lib-src := $(shell find lib -type f)
 lib-helper := $(wildcard lib/*.m4)
 lib-m4 := $(addprefix $(m4dir)/,$(lib-src))
 
