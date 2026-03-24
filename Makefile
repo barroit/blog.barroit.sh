@@ -46,23 +46,23 @@ prefix-y := $(m4dir) $(pubdir)
 
 deploy-ready:
 
-include build_tool/images.mak
+include scripts/Makefile.images
 
-include build_tool/fonts.mak
+include scripts/Makefile.fonts
 
-include build_tool/notice.mak
+include scripts/Makefile.notice
 
-include build_tool/license.mak
+include scripts/Makefile.license
 
-include build_tool/lib.mak
+include scripts/Makefile.lib
 
-include build_tool/page.mak
+include scripts/Makefile.page
 
-include build_tool/css.mak
+include scripts/Makefile.css
 
-include build_tool/html.mak
+include scripts/Makefile.html
 
-include build_tool/headers.mak
+include scripts/Makefile.headers
 
 $(prefix-y):
 	mkdir -p $@
