@@ -1,33 +1,18 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-images-in  := $(shell find images -type f | grep -vE '\.aseprite$$')
-images-dir := $(sort $(dir $(images-in)))
-images-y   := $(addprefix $(objtree)/,$(images-in))
+onchange-src += images/**/*
 
-images-prefix := $(addprefix $(objtree)/,$(images-dir))
-static-images-prefix := $(addprefix $(pubdir)/,$(images-dir))
+img-src := $(shell find images -type f -not -name '*.aseprite')
+img-y := $(addsuffix .stamp,$(addprefix $(pubdir)/,$(img-src)))
 
-prefix-y += $(images-prefix) $(static-images-prefix)
-onchange-in += images/**/*
+images_asmap := $(objtree)/images_asmap.m4
+images_asmap_sed := $(objtree)/images_asmap.sed
 
-$(images-y): $(objtree)/%: % | $(images-prefix) $(static-images-prefix)
-	cp $< $@
-	$(ln-unique) $@ $(subst $(objtree),$(pubdir),$(@D))
+clean += $(images_asmap) $(images_asmap_sed)
+distclean += $(addsuffix *,$(basename $(basename $(img-y))))
 
-images-asmap-y := $(objtree)/images_asmap.m4
+$(images_asmap_sed):
+	mkdir -p $(@D)
+	printf '%s\n' s,^/images,IMAGES, >$@
 
-$(images-asmap-y): $(images-y)
-	find $(static-images-prefix) -maxdepth 1 -type f | \
-	sed s,$(pubdir),, | $(gen-asmap) s,^/images/,, IMAGES >$@
-
-clean-y += clean-images
-distclean-y += distclean-images
-
-.PHONY: clean-images distclean-images
-
-clean-images:
-	rm -f $(images-asmap-y)
-
-distclean-images: clean-images
-	find $(images-prefix) $(static-images-prefix) \
-	     -exec rm {} + 2>/dev/null || true
+$(images_asmap): $(img-y)

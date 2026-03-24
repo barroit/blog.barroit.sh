@@ -12,7 +12,7 @@ while read uri; do
 	ext=$(printf $name | cut -d. -f2)
 
 	printf 'define('
-	printf '%s_%s_%s' $2 $stem $ext | tr [[:lower:]]/ [[:upper:]]_
+	printf '%s_%s' $stem $ext | tr [[:lower:]]/ [[:upper:]]_
 	printf ', %s)\n\n' $uri
 done
 

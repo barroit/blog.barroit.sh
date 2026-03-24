@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+onchange-src += index.css style/*.css
+
+style-src := index.css $(wildcard style/*.css)
+style-m4 := $(addprefix $(m4dir)/,$(style-src))
+
+style := $(objtree)/index.css
+style-y := $(pubdir)/$(style).stamp
+
+__html-m4 := $(m4dir)/.index.html
+
+clean += $(style)* $(style-m4) $(__html-m4)
+distclean += $(addsuffix *,$(basename $(basename $(style-y))))
+
+$(m4dir)/style/font.css: $(fonts_asmap)
+
+$(m4dir)/index.css: $(images_asmap)
+
+$(__html-m4): index.html
+	mkdir -p $(@D)
+	cp $< $@
+
+$(style)1: $(style-m4) $(__html-m4) $(page-m4) $(lib-m4)
+	$(tailwindcss) --cwd $(m4dir) --input $(realpath $<) >$@
+
+$(style)1-min: %-min: %
+	$(esbuild) --external:/fonts/* --external:/images/* \
+		   --minify $< --outfile=$@
+
+$(style): %: %1$(MINIMIZE)
+	cp $< $@

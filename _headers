@@ -13,7 +13,7 @@ define(SECURITY_HEADER,
 
   Content-Security-Policy: dnl
     default-src 'none'; frame-ancestors 'none'; connect-src 'self'; dnl
-    script-src-elem 'self' ifdef(`DEV', 'unsafe-inline') dnl
+    script-src-elem 'self' ifdef([[DEV]], 'unsafe-inline') dnl
                     static.cloudflareinsights.com; dnl
     font-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'
 )

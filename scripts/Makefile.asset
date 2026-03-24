@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+indexes_asmap := $(objtree)/indexes_asmap.m4
+indexes_asmap_sed := $(objtree)/indexes_asmap.sed
+
+clean += $(indexes_asmap) $(indexes_asmap_sed)
+
+$(indexes_asmap_sed):
+	mkdir -p $(@D)
+	printf '%s\n' s,^,AS, >$@
+
+$(indexes_asmap): $(script-y) $(style-y)

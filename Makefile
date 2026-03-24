@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 m4 ?= m4
-m4 := printf 'changequote([[, ]])' | $(m4) - -Uformat
+m4 := printf 'changequote([[, ]])' | $(m4) - -Uformat $${DEV:+-DDEV}
 
 esbuild ?= esbuild
 esbuild += --bundle --format=esm
@@ -22,25 +22,25 @@ onchange ?= onchange
 concurrently ?= concurrently
 wrangler ?= wrangler
 
-gen-asmap := ./scripts/gen-asmap.sh
-lan-ip    := ./scripts/lan-ip.py
-ln-unique := ./scripts/ln-unique.sh
+lan-ip      := ./scripts/lan-ip.py
+ln-unique   := ./scripts/ln-unique.sh
+map-asset   := ./scripts/map-asset.sh
+map-license := ./scripts/map-license.sh
+map-notice  := ./scripts/map-notice.sh
 
 objtree := build
 m4dir := $(objtree)/m4
 pubdir := $(objtree)/static
 
-ifneq ($(minimize),)
-	minimize := -terser
+ifneq ($(MINIMIZE),)
+	MINIMIZE := -min
 endif
 
-clean-y :=
-distclean-y :=
+clean :=
+distclean :=
 
-onchange-in :=
+onchange-src :=
 deploy-ready-y :=
-
-prefix-y := $(m4dir) $(pubdir)
 
 .PHONY: deploy-ready
 
@@ -58,41 +58,53 @@ include scripts/Makefile.lib
 
 include scripts/Makefile.page
 
-include scripts/Makefile.css
+include scripts/Makefile.script
+
+include scripts/Makefile.style
+
+include scripts/Makefile.asset
 
 include scripts/Makefile.html
 
 include scripts/Makefile.headers
 
-$(prefix-y):
-	mkdir -p $@
+$(pubdir)/%.stamp: %
+	mkdir -p $(@D)
+	$(ln-unique) $< $(@D)
+	touch $@
 
-terser-y := $(addsuffix 1-terser,$(terser-in))
+%_asmap.m4: %_asmap.sed
+	printf '%s\n' \
+	       $(addsuffix -*,$(basename $(basename $(filter-out $<,$^)))) | \
+	sed s,$(pubdir),, | sort | uniq | $(map-asset) $$(cat $<) >$@
 
-$(terser-y): %1-terser: %1
-	$(terser) <$< >$@
+$(m4dir)/%: %
+	mkdir -p $(@D)
+	$(m4) $(filter-out $<,$^) $< >$@
 
 deploy-ready: $(deploy-ready-y)
 
 .PHONY: clean distclean
 
-clean: $(clean-y)
+clean:
+	rm -f $(clean)
 
-distclean: clean $(distclean-y)
+distclean: clean
+	rm -f $(distclean)
 
 .PHONY: hot-build hot-host hot-dev host deploy
 
 hot-build: deploy-ready
-	$(onchange) $(patsubst %,'%',$(onchange-in)) -- $(MAKE) deploy-ready
+	$(onchange) $(patsubst %,'%',$(onchange-src)) -- $(MAKE) deploy-ready
 
 hot-host:
-	$(wrangler) dev --live-reload --ip=$(shell $(lan-ip))
+	$(wrangler) dev --live-reload --ip=$$($(lan-ip))
 
 hot-dev: deploy-ready
 	$(concurrently) '$(MAKE) hot-build' '$(MAKE) hot-host'
 
 host:
-	$(wrangler) dev --ip=$(shell $(lan-ip))
+	$(wrangler) dev --ip=$$($(lan-ip))
 
 deploy:
 	$(wrangler) deploy

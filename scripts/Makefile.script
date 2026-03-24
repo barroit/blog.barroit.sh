@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+script := $(objtree)/index.js
+script-y := $(pubdir)/$(script).stamp
+
+clean += $(script)*
+distclean += $(addsuffix *,$(basename $(basename $(script-y))))
+
+$(script)1: $(page-m4) $(lib-m4)
+	$(esbuild) --jsx-import-source=preact --jsx=automatic \
+		   --sourcemap=inline --outfile=$@ $<
+
+$(script)1-min: %-min: %
+	$(terser) >$@ <$<
+
+$(script): %: %1$(MINIMIZE)
+	cp $< $@
