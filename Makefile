@@ -30,13 +30,6 @@ prefix := build
 m4-prefix := $(prefix)/m4
 static-prefix := $(prefix)/static
 
-define def-target
-	$1-glob := $2 $4
-	$1-in   := $$(wildcard $$($1-glob))
-	$1-m4-y := $$(addprefix $$(m4-prefix)/,$$($1-in))
-	$1-y    := $$(prefix)/$3
-endef
-
 ifneq ($(minimize),)
 	minimize := -terser
 endif

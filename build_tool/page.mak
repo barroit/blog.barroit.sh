@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-$(eval $(call def-target,page,index.jsx,index.js,page/*.jsx))
+page-glob := index.jsx page/*.jsx
+page-in   := $(wildcard $(page-glob))
+page-m4-y := $(addprefix $(m4-prefix)/,$(page-in))
+page-y    := $(prefix)/index.js
 
 page-generic-filter-out := %/gallery.jsx %/log.jsx %/credit.jsx
 page-generic-m4-y := $(filter-out $(page-generic-filter-out),$(page-m4-y))

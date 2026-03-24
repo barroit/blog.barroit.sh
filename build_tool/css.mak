@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 css-in := index.html index.jsx style/*.css
-$(eval $(call def-target,css,$(realpath index.css),index.css,$(css-in)))
+css-glob := $(realpath index.css) $(css-in)
+css-in   := $(wildcard $(css-glob))
+css-m4-y := $(addprefix $(m4-prefix)/,$(css-in))
+css-y    := $(prefix)/index.css
 css-m4-y := $(m4-prefix)/index.css
 
 onchange-in += index.css style/*.css

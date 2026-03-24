@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-$(eval $(call def-target,html,index.html,index.html))
+html-glob := index.html
+html-in   := $(wildcard $(html-glob))
+html-m4-y := $(addprefix $(m4-prefix)/,$(html-in))
+html-y    := $(prefix)/index.html
 index-asmap-y := $(prefix)/index_asmap.m4
 
 onchange-in += $(html-glob)
