@@ -22,13 +22,13 @@ onchange ?= onchange
 concurrently ?= concurrently
 wrangler ?= wrangler
 
-gen-asmap    := ./scripts/gen-asmap.sh
-lan-ip       := ./scripts/lan-ip.py
-ln-unique    := ./scripts/ln-unique.sh
+gen-asmap := ./scripts/gen-asmap.sh
+lan-ip    := ./scripts/lan-ip.py
+ln-unique := ./scripts/ln-unique.sh
 
-prefix := build
-m4-prefix := $(prefix)/m4
-static-prefix := $(prefix)/static
+objtree := build
+m4dir := $(objtree)/m4
+pubdir := $(objtree)/static
 
 ifneq ($(minimize),)
 	minimize := -terser
@@ -40,7 +40,7 @@ distclean-y :=
 onchange-in :=
 deploy-ready-y :=
 
-prefix-y := $(m4-prefix) $(static-prefix)
+prefix-y := $(m4dir) $(pubdir)
 
 .PHONY: deploy-ready
 

@@ -4,14 +4,14 @@ jsx-helper-y := lib/jsx.m4
 
 lib-glob := lib/*.jsx lib/*.js
 lib-in   := $(wildcard $(lib-glob))
-lib-m4-y := $(addprefix $(m4-prefix)/,$(lib-in))
+lib-m4-y := $(addprefix $(m4dir)/,$(lib-in))
 
-lib-m4-prefix := $(m4-prefix)/lib
+lib-m4-prefix := $(m4dir)/lib
 
 prefix-y += $(lib-m4-prefix)
 onchange-in += $(lib-glob) $(jsx-helper-y)
 
-$(lib-m4-y): $(m4-prefix)/%: $(images-asmap-y) $(jsx-helper-y) % | \
+$(lib-m4-y): $(m4dir)/%: $(images-asmap-y) $(jsx-helper-y) % | \
 			     $(lib-m4-prefix)
 	$(m4) $^ >$@
 

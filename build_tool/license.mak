@@ -1,15 +1,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 license-in     := $(wildcard LICENSES/*)
-license-y      := $(addprefix $(static-prefix)/,$(license-in))
-license-map-y  := $(prefix)/license.js
-license-prefix := $(static-prefix)/LICENSES
+license-y      := $(addprefix $(pubdir)/,$(license-in))
+license-map-y  := $(objtree)/license.js
+license-prefix := $(pubdir)/LICENSES
 
 prefix-y += $(license-prefix)
 onchange-in += LICENSES/*
 deploy-ready-y += $(license-y)
 
-$(license-y): $(static-prefix)/%: % | $(license-prefix)
+$(license-y): $(pubdir)/%: % | $(license-prefix)
 	cp $< $@
 
 $(license-map-y): $(license-in)

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 notice-map-in := $(shell find images fonts -name 'README.txt')
-notice-map-y  := $(prefix)/notice.m4
+notice-map-y  := $(objtree)/notice.m4
 
 $(notice-map-y): $(notice-map-in)
 	exec >$@ && \

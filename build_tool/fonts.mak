@@ -2,23 +2,23 @@
 
 fonts-in  := $(shell find fonts -type f)
 fonts-dir := $(sort $(dir $(fonts-in)))
-fonts-y   := $(addprefix $(prefix)/,$(fonts-in))
+fonts-y   := $(addprefix $(objtree)/,$(fonts-in))
 
-fonts-prefix := $(addprefix $(prefix)/,$(fonts-dir))
-static-fonts-prefix := $(addprefix $(static-prefix)/,$(fonts-dir))
+fonts-prefix := $(addprefix $(objtree)/,$(fonts-dir))
+static-fonts-prefix := $(addprefix $(pubdir)/,$(fonts-dir))
 
 prefix-y += $(fonts-prefix) $(static-fonts-prefix)
 onchange-in += fonts/**/*
 
-$(fonts-y): $(prefix)/%: % | $(fonts-prefix) $(static-fonts-prefix)
+$(fonts-y): $(objtree)/%: % | $(fonts-prefix) $(static-fonts-prefix)
 	cp $< $@
-	$(ln-unique) $@ $(subst $(prefix),$(static-prefix),$(@D))
+	$(ln-unique) $@ $(subst $(objtree),$(pubdir),$(@D))
 
-fonts-asmap-y := $(prefix)/fonts_asmap.m4
+fonts-asmap-y := $(objtree)/fonts_asmap.m4
 
 $(fonts-asmap-y): $(fonts-y)
 	find $(static-fonts-prefix) -maxdepth 1 -type f | \
-	sed s,$(static-prefix),, | $(gen-asmap) s,^/fonts/,, FONTS >$@
+	sed s,$(pubdir),, | $(gen-asmap) s,^/fonts/,, FONTS >$@
 
 clean-y += clean-fonts
 distclean-y += distclean-fonts
