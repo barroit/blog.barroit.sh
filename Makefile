@@ -13,6 +13,9 @@ terser += --module --ecma 2020 --mangle --comments false \
 tailwindcss ?= tailwindcss
 tailwindcss += --optimize
 
+sphinx ?= sphinx-build
+sphinx := $(sphinx) --builder post
+
 magick ?= magick
 
 ffmpeg ?= ffmpeg
@@ -67,6 +70,8 @@ include scripts/Makefile.asset
 include scripts/Makefile.html
 
 include scripts/Makefile.headers
+
+include scripts/Makefile.posts
 
 $(pubdir)/%.stamp: %
 	mkdir -p $(@D)

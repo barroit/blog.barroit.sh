@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+postdir := $(objtree)/posts
+
+posts-src := $(shell find posts -type f -name '*.rst')
+posts-m4 := $(addprefix $(m4dir)/,$(posts-src))
+
+post_index := $(postdir)/searchindex.json
+post_header := $(m4dir)/posts/post_header.m4
+post_master := $(m4dir)/posts/index.rst
+
+$(post_header):
+	mkdir -p $(@D)
+	printf ':orphan:\n\n' >$@
+
+$(posts-m4): $(post_header)
+
+$(post_master):
+	mkdir -p $(@D)
+	>$@
+
+$(post_index): $(posts-m4) $(post_master)
+	rm -f $(postdir)/environment.pickle
+	$(sphinx) --conf-dir sphinx $(m4dir)/posts $(postdir)
