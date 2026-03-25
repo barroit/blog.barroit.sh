@@ -8,11 +8,11 @@ printf 'divert(-1)\n\n'
 while read uri; do
 	name=$(printf $uri | sed $1)
 
-	stem=$(printf $name | cut -d- -f1)
-	ext=$(printf $name | cut -d. -f2)
+	stem=${name%-*}
+	ext=${name##*.}
 
 	printf 'define('
-	printf '%s_%s' $stem $ext | tr [[:lower:]]/ [[:upper:]]_
+	printf '%s_%s' $stem $ext | tr [:lower:]/- [:upper:]__
 	printf ', %s)\n\n' $uri
 done
 

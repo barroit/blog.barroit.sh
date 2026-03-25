@@ -71,6 +71,8 @@ include scripts/Makefile.html
 
 include scripts/Makefile.headers
 
+include scripts/Makefile.media
+
 include scripts/Makefile.posts
 
 $(pubdir)/%.stamp: %

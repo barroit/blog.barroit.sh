@@ -2,18 +2,18 @@
 
 postdir := $(objtree)/posts
 
-posts-src := $(shell find posts -type f -name '*.rst')
+posts-src := $(wildcard posts/**/*)
 posts-m4 := $(addprefix $(m4dir)/,$(posts-src))
 
 post_index := $(postdir)/searchindex.json
-post_header := $(m4dir)/posts/post_header.m4
-post_master := $(m4dir)/posts/index.rst
+post_header := $(post_m4dir)/post_header.m4
+post_master := $(post_m4dir)/index.rst
 
 $(post_header):
 	mkdir -p $(@D)
 	printf ':orphan:\n\n' >$@
 
-$(posts-m4): $(post_header)
+$(posts-m4): $(post_header) $(media_asmap)
 
 $(post_master):
 	mkdir -p $(@D)
@@ -21,4 +21,4 @@ $(post_master):
 
 $(post_index): $(posts-m4) $(post_master)
 	rm -f $(postdir)/environment.pickle
-	$(sphinx) --conf-dir sphinx $(m4dir)/posts $(postdir)
+	$(sphinx) --conf-dir sphinx $(post_m4dir) $(postdir)
