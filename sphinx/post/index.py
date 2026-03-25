@@ -8,7 +8,7 @@ from sphinx.search.en import SearchEnglish
 from sphinx.search.ja import SearchJapanese
 from sphinx.search.zh import SearchChinese
 
-from .directive import tag_get_ids_map
+from .directive import tag_get_map
 
 def split_words(lang, text):
 	out = []
@@ -101,7 +101,7 @@ def freeze_tag_index(index):
 class tag_index(IndexBuilder):
 	def __init__(self, env, lang, options, scoring):
 		IndexBuilder.__init__(self, env, lang, options, scoring)
-		self.tag_map = tag_get_ids_map(env)
+		self.tag_map = tag_get_map(env)
 
 	def freeze(self):
 		data = IndexBuilder.freeze(self)
