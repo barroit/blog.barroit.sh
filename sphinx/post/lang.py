@@ -51,7 +51,7 @@ def is_latin(ch):
 def is_latin_word(word):
 	return latin_re.match(word) is not None
 
-def char_lang(ch):
+def resolve_lang(ch):
 	if is_latin(ch):
 		return LANG_EN
 	elif is_hira(ch) or is_kata(ch):
@@ -73,7 +73,7 @@ def add_words(dst, seen, words):
 
 		i += 1
 
-def split_lang(langs, lang, text):
+def split_by_lang(text, lang, langs):
 	if lang == LANG_EN:
 		return langs.en.split(text)
 	elif lang == LANG_JA:
@@ -94,7 +94,7 @@ def split_lang(langs, lang, text):
 
 def flush_words(langs, out, seen, buf, lang):
 	text = ''.join(buf)
-	words = split_lang(langs, lang, text)
+	words = split_by_lang(text, lang, langs)
 
 	add_words(out, seen, words)
 	buf.clear()
@@ -123,7 +123,7 @@ class mixed_lang(SearchLanguage):
 
 		while i < len(text):
 			ch = text[i]
-			cur = char_lang(ch)
+			cur = resolve_lang(ch)
 
 			if buf and cur != lang:
 				flush_words(self, out, seen, buf, lang)

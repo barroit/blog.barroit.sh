@@ -10,18 +10,6 @@ from sphinx.search.zh import SearchChinese
 
 from .directive import tag_get_map
 
-def split_words(lang, text):
-	out = []
-	words = lang.split(text)
-
-	for word in words:
-		word = word.strip().lower()
-
-		if word:
-			out.append(word)
-
-	return out
-
 def gen_doc_index(titles):
 	out = {}
 	docs = sorted(titles)
@@ -45,17 +33,17 @@ def collect_tag_words(tag_map, titles, lang):
 	out = []
 	live_index = gen_doc_live_index(titles)
 
-	for doc in tag_map:
-		if doc not in live_index:
+	for pos in tag_map:
+		if pos not in live_index:
 			continue
 
-		tags = tag_map[doc]
+		tags = tag_map[pos]
 
 		for tag in tags:
-			words = split_words(lang, tag)
+			words = lang.split(tag)
 
 			for word in words:
-				out.append((doc, word))
+				out.append((pos, word))
 
 	return out
 
@@ -65,22 +53,17 @@ def gen_tag_index(tag_map, titles, lang):
 	doc_index = gen_doc_index(titles)
 
 	for row in rows:
-		doc = row[0]
+		pos = row[0]
 		word = row[1]
-		stemmed = lang.stem(word).lower()
+		stemmed = lang.stem(word)
 
-		if stemmed:
-			key = stemmed
-		else:
-			key = word
-
-		docs = out.get(key)
+		docs = out.get(stemmed)
 
 		if docs is None:
 			docs = {}
-			out[key] = docs
+			out[stemmed] = docs
 
-		docs[doc_index[doc]] = 1
+		docs[doc_index[pos]] = 1
 
 	return out
 

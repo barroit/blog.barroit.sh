@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import json
 import sqlite3
 
 from sphinx.util.docutils import SphinxDirective
@@ -8,10 +9,20 @@ from sphinx.util.docutils import SphinxDirective
 TAGS_MAP = 'tags_map'
 
 ALIAS_QUERY = """
-	select tag.id, tag.class,
-	       group_concat(alias.lang || ':' || alias.name) as aliases
-	from tag left join alias on tag.id = alias.tag
-	where tag.id = ?
+select
+   tag.id,
+   tag.class,
+   max(case when alias.role = 'master' then alias.name end) as master,
+   max(case when alias.role = 'aux' then alias.name end) as aux,
+   json_group_array(json_array(alias.lang, alias.name)) as aliases
+from
+   tag
+left join
+   alias
+on
+   tag.id = alias.tag
+where
+   tag.id = ?
 """
 
 __db = None
@@ -31,14 +42,6 @@ def tag_init_map(app):
 
 def tag_get_map(env):
 	return getattr(env, TAGS_MAP)
-
-def format_aliases(aliases):
-	arr = aliases.split(',')
-
-	for idx, alias in enumerate(arr):
-		arr[idx] = alias.split(':')
-
-	return arr
 
 class tag_directive(SphinxDirective):
 	has_content = False
@@ -65,15 +68,10 @@ class tag_directive(SphinxDirective):
 
 			__res = cur.fetchone()
 			res = dict(__res)
-			names = [ [ 'en', res['id'] ] ]
+			aliases = json.loads(res['aliases'])
 
-			if res['aliases']:
-				aliases = format_aliases(res['aliases'])
+			aliases.append([ 'en', res['id'] ])
+			tags.extend([ alias[1] for alias in aliases ])
 
-				names.extend(aliases)
-
-			# FIXME store language -> tag in dom
-
-			tags.extend([ name[1] for name in names ])
-
+		# FIXME store language -> tag in dom
 		return []
