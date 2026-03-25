@@ -1,4 +1,5 @@
-.. SPDX-License-Identifier: GPL-3.0-or-later
+.. SPDX-License-Identifier: CC-BY-NC-4.0
+
 .. tag:: miku, concert
 
 ===============================
