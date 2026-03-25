@@ -1,6 +1,6 @@
 .. SPDX-License-Identifier: CC-BY-NC-4.0
 
-.. tag:: miku, concert, lawmiku
+.. tag:: miku, lawmiku
 
 =============================================
 初音ミク LAWSON 50th Anniversary Special LIVE

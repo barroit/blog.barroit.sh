@@ -1,6 +1,6 @@
 .. SPDX-License-Identifier: CC-BY-NC-4.0
 
-.. tag:: miku, concert, pokemon, pokemiku
+.. tag:: miku, pokemon, pokemiku
 
 ======================================
 ポケモン feat. 初音ミク VOLTAGE Live！

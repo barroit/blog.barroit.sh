@@ -6,7 +6,7 @@ script-y := $(pubdir)/$(script).stamp
 clean += $(script)*
 distclean += $(addsuffix *,$(basename $(basename $(script-y))))
 
-$(script)1: $(page-m4) $(lib-m4)
+$(script)1: $(page-m4) $(lib-m4) $(posts_list)
 	$(esbuild) --jsx-import-source=preact --jsx=automatic \
 		   --sourcemap=inline --outfile=$@ $<
 

@@ -14,9 +14,15 @@ post_master := $(post_m4dir)/index.rst
 posts_asmap := $(postdir)/posts_asmap.m4
 posts_asmap_sed := $(postdir)/posts_asmap.sed
 
-clean += $(shell find $(postdir) -type f)
+post-o := $(objtree)/posts.json
+post-y := $(pubdir)/$(post-o).stamp
+
+index-o := $(objtree)/index.json
+index-y := $(pubdir)/$(index-o).stamp
+
+clean += $(shell test -d $(postdir) && find $(postdir) -type f)
 clean += $(post_header) $(post_master) $(posts-m4)
-clean += $(posts_asmap) $(posts_asmap_sed)
+clean += $(posts_asmap) $(posts_asmap_sed) $(post-o)*
 distclean += $(addsuffix *,$(basename $(basename $(posts-y))))
 
 $(post_header):
@@ -41,3 +47,14 @@ $(posts_asmap_sed):
 	printf '%s\n' s,^/posts,POSTS, >$@
 
 $(posts_asmap): $(posts-y)
+
+$(post-o)1: $(post_index)
+	find posts -type f -name '*.rst' | \
+	$(list-posts) s,^posts/,, $(postdir) | \
+	jq -cs 'sort_by(.modify) | reverse' >$@
+
+$(post-o): $(posts_asmap) $(post-o)1
+	$(m4) $^ >$@
+
+$(index-o): $(post_index)
+	cp $< $@

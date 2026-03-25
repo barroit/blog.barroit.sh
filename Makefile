@@ -30,6 +30,7 @@ ln-unique   := ./scripts/ln-unique.sh
 map-asset   := ./scripts/map-asset.sh
 map-license := ./scripts/map-license.sh
 map-notice  := ./scripts/map-notice.sh
+list-posts  := ./scripts/list-posts.sh
 
 objtree := build
 m4dir := $(objtree)/m4
@@ -49,6 +50,8 @@ deploy-ready-y :=
 
 deploy-ready:
 
+include scripts/Makefile.media
+
 include scripts/Makefile.images
 
 include scripts/Makefile.fonts
@@ -65,15 +68,13 @@ include scripts/Makefile.script
 
 include scripts/Makefile.style
 
+include scripts/Makefile.posts
+
 include scripts/Makefile.asset
 
 include scripts/Makefile.html
 
 include scripts/Makefile.headers
-
-include scripts/Makefile.media
-
-include scripts/Makefile.posts
 
 $(pubdir)/%.stamp: %
 	mkdir -p $(@D)

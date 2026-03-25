@@ -2,6 +2,7 @@
 
 {
    "files.associations": {
-      "**/scripts/Makefile.*": "makefile"
+      "**/scripts/Makefile.*": "makefile",
+      "**/*.fjson": "json"
    }
 }
