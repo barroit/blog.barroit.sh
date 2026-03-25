@@ -2,12 +2,22 @@
 
 postdir := $(objtree)/posts
 
-posts-src := $(wildcard posts/**/*)
+posts-src := $(shell find posts -type f)
 posts-m4 := $(addprefix $(m4dir)/,$(posts-src))
+posts-y := $(addprefix $(pubdir)/,$(posts-src:.jp.rst=.rst))
+posts-y := $(addsuffix .stamp,$(posts-y:.rst=.fjson))
 
 post_index := $(postdir)/searchindex.json
 post_header := $(post_m4dir)/post_header.m4
 post_master := $(post_m4dir)/index.rst
+
+posts_asmap := $(postdir)/posts_asmap.m4
+posts_asmap_sed := $(postdir)/posts_asmap.sed
+
+clean += $(shell find $(postdir) -type f)
+clean += $(post_header) $(post_master) $(posts-m4)
+clean += $(posts_asmap) $(posts_asmap_sed)
+distclean += $(addsuffix *,$(basename $(basename $(posts-y))))
 
 $(post_header):
 	mkdir -p $(@D)
@@ -22,3 +32,12 @@ $(post_master):
 $(post_index): $(posts-m4) $(post_master)
 	rm -f $(postdir)/environment.pickle
 	$(sphinx) --conf-dir sphinx $(post_m4dir) $(postdir)
+
+%.fjson: $(post_index)
+	cp $(objtree)/$*.*fjson $@
+
+$(posts_asmap_sed):
+	mkdir -p $(@D)
+	printf '%s\n' s,^/posts,POSTS, >$@
+
+$(posts_asmap): $(posts-y)

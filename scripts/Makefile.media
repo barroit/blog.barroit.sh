@@ -4,7 +4,7 @@ onchange-src += media/**/*
 
 post_m4dir := $(m4dir)/posts
 
-media-o := $(shell find media -type f -not -name '.*' | \
+media-o := $(shell find media -type f | \
 		   sed 's/\(.*\)\.jpeg/\1.avif \1_xthumb.avif/; \
 			s/\(.*\)\.mov/\1.webm \1.mp4 \1_ythumb.avif/')
 media-y := $(addsuffix .stamp,$(addprefix $(pubdir)/,$(media-o)))
