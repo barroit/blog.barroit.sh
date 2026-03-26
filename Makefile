@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 m4 ?= m4
-m4 := printf 'changequote([[, ]])' | $(m4) - -Uformat $${DEV:+-DDEV}
+m4 := printf 'changequote([[, ]])' | $(m4) - -Uformat
+
+# export DEV=http://$(./scripts/lan-ip.py):3939
+m4 += $${DEV:+-DDEV=$$DEV}
 
 esbuild ?= esbuild
 esbuild += --bundle --format=esm
@@ -106,13 +109,13 @@ hot-build: deploy-ready
 	$(onchange) $(patsubst %,'%',$(onchange-src)) -- $(MAKE) deploy-ready
 
 hot-host:
-	$(wrangler) dev --live-reload --ip=$$($(lan-ip))
+	$(wrangler) dev --live-reload --ip=$$($(lan-ip)) --port=3939
 
 hot-dev: deploy-ready
 	$(concurrently) '$(MAKE) hot-build' '$(MAKE) hot-host'
 
 host:
-	$(wrangler) dev --ip=$$($(lan-ip))
+	$(wrangler) dev --ip=$$($(lan-ip)) --port=3939
 
 deploy:
 	$(wrangler) deploy

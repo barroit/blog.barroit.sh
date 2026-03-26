@@ -10,8 +10,8 @@ media-o := $(shell find media -type f -name '*.jpeg' -or -name '*.mov' \
 			s/\(.*\)\.mov/\1.webm \1.mp4 \1_ythumb.avif/')
 media-y := $(addsuffix .stamp,$(addprefix $(pubdir)/,$(media-o)))
 
-media_asmap := $(post_m4dir)/media_asmap.m4
-media_asmap_sed := $(post_m4dir)/media_asmap.sed
+media_asmap := $(objtree)/media_asmap.m4
+media_asmap_sed := $(objtree)/media_asmap.sed
 
 clean += $(media_asmap) $(media_asmap_sed)
 distclean += $(addsuffix *,$(basename $(basename $(media-y))))

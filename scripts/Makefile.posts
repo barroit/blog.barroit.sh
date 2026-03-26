@@ -5,16 +5,17 @@ onchange-src += posts/**/*
 postdir := $(objtree)/posts
 
 posts-src := $(shell find posts -type f -name '*.rst' -or -name 'README.txt')
+posts-helper := $(wildcard posts/*.m4)
 posts-m4 := $(addprefix $(m4dir)/,$(posts-src))
 posts-y := $(addprefix $(pubdir)/,$(posts-src:.jp.rst=.rst))
-posts-y := $(addsuffix .stamp,$(posts-y:.rst=.fjson))
+posts-y := $(addsuffix .stamp,$(posts-y:.rst=.html))
 
 post_index := $(postdir)/searchindex.json
 post_header := $(post_m4dir)/post_header.m4
 post_master := $(post_m4dir)/index.rst
 
-posts_asmap := $(postdir)/posts_asmap.m4
-posts_asmap_sed := $(postdir)/posts_asmap.sed
+posts_asmap := $(objtree)/posts_asmap.m4
+posts_asmap_sed := $(objtree)/posts_asmap.sed
 
 post_list-o := $(objtree)/post_list.json
 post_list-y := $(pubdir)/$(post_list-o).stamp
@@ -34,7 +35,7 @@ $(post_header):
 	mkdir -p $(@D)
 	printf ':orphan:\n\n' >$@
 
-$(posts-m4): $(post_header) $(media_asmap)
+$(posts-m4): $(post_header) $(media_asmap) $(posts-helper)
 
 $(post_master):
 	mkdir -p $(@D)
@@ -44,8 +45,8 @@ $(post_index): $(posts-m4) $(post_master)
 	rm -f $(postdir)/environment.pickle
 	$(sphinx) --conf-dir sphinx $(post_m4dir) $(postdir)
 
-%.fjson: $(post_index)
-	cp $(objtree)/$*.*fjson $@
+posts/%.html: $(post_index)
+	jq -r .body $(postdir)/$*.*fjson >$@
 
 $(posts_asmap_sed):
 	mkdir -p $(@D)

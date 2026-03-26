@@ -4,13 +4,33 @@
  */
 
 import { useRoute, useLocation } from 'preact-iso'
-import { useContext, useEffect, useState } from 'preact/hooks'
+import { useContext, useEffect, useRef, useState } from 'preact/hooks'
 
 import { PostListContext, PostMapContext } from '../index.jsx'
 import Button from '../lib/button.jsx'
 import { CenteredLoading, NotFoundDialog } from '../lib/ux.jsx'
-import { history_return } from '../lib/history.js'
 import Header from './header.jsx'
+
+function sanitize_post(post)
+{
+	post = post.replaceAll(/style="width: ([\d.]+%)"/g, 'width="$1"')
+
+	return post
+}
+
+function Content({ post })
+{
+	const box = useRef()
+
+	useEffect(() =>
+	{
+		box.current.insertAdjacentHTML('beforeend', post)
+	}, [])
+
+RETURN_JSX_BEGIN
+<div ref={ box } id='post' class='post mx-auto w-[60ch]'></div>
+RETURN_JSX_END
+}
 
 function Master({ post_list, post_map })
 {
@@ -29,21 +49,18 @@ function Master({ post_list, post_map })
 			return
 
 		const res = await fetch(post_meta.uri)
-		const data = await res.json()
+		const __data = await res.text()
+		const data = sanitize_post(__data)
 
 		set_post(data)
 		return () => set_post()
 	}, [ params.slug ])
 
-RETURN_JSX_BEGIN
-<div>
-{ !found ? (
-  <NotFoundDialog part='Slug' content={ params.slug }/>
+RETURN_JSX_BEGIN !found ? (
+<NotFoundDialog part='Slug' content={ params.slug }/>
 ) : post ? (
-  post.title
-) : undefined }
-</div>
-RETURN_JSX_END
+<Content { ...{ post } }/>
+) : undefined RETURN_JSX_END
 }
 
 function go_back()

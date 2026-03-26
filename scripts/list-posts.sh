@@ -26,7 +26,7 @@ trap 'rm -f .tmp-$$' EXIT
 while read src; do
 	>.tmp-$$
 
-	uri=$(printf $src | cut -d. -f1 | tr [:lower:]/- [:upper:]__)_FJSON
+	uri=$(printf $src | cut -d. -f1 | tr [:lower:]/- [:upper:]__)_HTML
 	path=$(printf $src | sed $1)
 
 	class=$(printf $path | cut -d/ -f1)

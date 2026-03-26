@@ -1,11 +1,13 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /*
  * Copyright 2026 Jiamu Sun <barroit@linux.com>
+ * Copyright 2026 Jiamu Sun <39@barroit.sh>
  */
 
 @import 'tailwindcss';
 
 @import './style/font.css';
+@import './style/post.css';
 
 @theme {
 	--color-miku-cyan: oklch(0.75 0.11 206.57);
