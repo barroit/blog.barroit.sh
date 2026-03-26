@@ -5,7 +5,7 @@
 
 import { useLocation } from 'preact-iso'
 
-import { history_go_back } from './history.js'
+import { history_return } from './history.js'
 
 /*
  * Initialize this Loading component with loading = 0, otherwise the delay is
@@ -42,11 +42,11 @@ RETURN_JSX_END
 export function NotFoundDialog({ part, content })
 {
 	const { route } = useLocation()
-	const go_back = BIND(history_go_back, route)
+	const history_return_fn = BIND(history_return, route)
 
 RETURN_JSX_BEGIN
 <dialog open class='inset-0 w-screen h-screen flex'>
-  <button onclick={ go_back }
+  <button onclick={ history_return_fn }
           class='m-auto p-3 w-75 rounded-lg shadow-sm cursor-pointer
                  transition HOT(bg-slate-100) ACTIVE(scale-90) space-y-5'>
     <div class='max-w-75 flex justify-center gap-x-5'>

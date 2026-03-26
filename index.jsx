@@ -47,7 +47,6 @@ RETURN_JSX_BEGIN
 	    shadow-md bg-slate-50 space-y-5 *:last:flex-1'>
   <LocationProvider>
     <PostContext value={ { post_list, post_map } }>
-      <header class=''>1</header>
       <Router>
         <Posts path='/'/>
         <Post path='/post/:class/:slug'/>

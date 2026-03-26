@@ -3,10 +3,36 @@
  * Copyright 2026 Jiamu Sun <barroit@linux.com>
  */
 
+import { createContext } from 'preact'
 import { useContext, useEffect, useRef } from 'preact/hooks'
 
-import { ShellContext } from './shell.jsx'
 import shuffle from './shuffle.js'
+
+export const FlickContext = createContext(undefined)
+
+const default_handler = {
+	pointerenter: new Map(),
+	click: new Map(),
+}
+
+export function flick_init_handler(handler_map)
+{
+	handler_map.current = structuredClone(default_handler)
+}
+
+export function flick_on_event(handler_map, event)
+{
+	const handler_entries = handler_map.current[event.type]
+	const fns = handler_entries.values()
+
+	for (const fn of fns)
+		fn(event)
+}
+
+function drop_handler(flick, key)
+{
+	flick.current.pointerenter.delete(key)
+}
 
 function pds_1d_fast(arr, min_dist, max_item)
 {
@@ -75,12 +101,7 @@ async function on_pointerenter(box, idx_map)
 	ctx.off_timer = setInterval(disable_flick, 40, ctx, spans, picked)
 }
 
-function drop_effect(shell, key)
-{
-	shell.current.pointerenter.delete(key)
-}
-
-function fmt_token(chr)
+function format_token(chr)
 {
 
 RETURN_JSX_BEGIN
@@ -90,7 +111,7 @@ RETURN_JSX_END
 
 export default function Flick({ children, ...props })
 {
-	const shell = useContext(ShellContext)
+	const flick = useContext(FlickContext)
 	const box = useRef()
 
 	if (!Array.isArray(children))
@@ -109,24 +130,22 @@ export default function Flick({ children, ...props })
 		idx_map.push(idx)
 	}
 
-	const on_pointerenter_fn = on_pointerenter.bind(undefined, box, idx_map)
+	const on_pointerenter_fn = BIND(on_pointerenter, box, idx_map)
 
 	useEffect(() =>
 	{
-		if (!shell)
+		if (!flick)
 			return
 
-		const drop_effect_fn = drop_effect.bind(undefined, shell, box)
-
-		shell.current.pointerenter.set(box, on_pointerenter_fn)
-		return drop_effect_fn
+		flick.current.pointerenter.set(box, on_pointerenter_fn)
+		return BIND(drop_handler, flick, box)
 	}, [])
 
-	const token = chars.map(fmt_token)
+	const token = chars.map(format_token)
 
 RETURN_JSX_BEGIN
 <span ref={ box } { ...props }
-      onpointerenter={ shell ? undefined : on_pointerenter_fn }>
+      onpointerenter={ flick ? undefined : on_pointerenter_fn }>
   { token }
 </span>
 RETURN_JSX_END

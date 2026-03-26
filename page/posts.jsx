@@ -7,6 +7,7 @@ import { useContext } from 'preact/hooks'
 
 import { PostContext } from '../index.jsx'
 import { CenteredLoading } from '../lib/ux.jsx'
+import Header from './header.jsx'
 
 export default function Posts()
 {
@@ -14,6 +15,8 @@ export default function Posts()
 
 RETURN_JSX_BEGIN
 <main class='relative'>
+  <CenteredLoading loading={ post_list && !post_list.length }/>
+  <Header>1</Header>
   <ul>
   { post_list ? post_list.map(post => (
     <li>
@@ -25,7 +28,6 @@ RETURN_JSX_BEGIN
     </li>
   )) : undefined }
   </ul>
-  <CenteredLoading loading={ post_list && !post_list.length }/>
 </main>
 RETURN_JSX_END
 }
