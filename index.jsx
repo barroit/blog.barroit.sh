@@ -50,7 +50,7 @@ RETURN_JSX_BEGIN
       <header class=''>1</header>
       <Router>
         <Posts path='/'/>
-        <Post path='/post/:slug'/>
+        <Post path='/post/:class/:slug'/>
         <NotFound default/>
       </Router>
     </PostContext>

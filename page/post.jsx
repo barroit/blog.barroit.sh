@@ -7,20 +7,37 @@ import { useRoute } from 'preact-iso'
 import { useContext } from 'preact/hooks'
 
 import { PostContext } from '../index.jsx'
-import { NotFoundDialog } from './404.jsx'
+import { CenteredLoading, NotFoundDialog } from '../lib/ux.jsx'
 
-export default function Post()
+function Master({ post_list, post_map })
 {
 	const { params } = useRoute()
-	const { slug } = params
+	const post_pos = post_map[params.slug]
+	const post_meta = post_list[post_pos]
 
-	const { post_map } = useContext(PostContext)
+	console.log(HAS_PROP(post_map, params.slug))
 
 RETURN_JSX_BEGIN
 <div>
-{ post_map && !HAS_PROP(post_map, slug) && (
-  <NotFoundDialog part='Slug' content={ slug }/>
-) }
+{ !HAS_PROP(post_map, params.slug) || post_meta.class != params.class ? (
+  <NotFoundDialog part='Slug' content={ params.slug }/>
+) : undefined }
 </div>
+RETURN_JSX_END
+}
+
+export default function Post()
+{
+	const { post_list, post_map } = useContext(PostContext)
+	const ready = post_list && post_list.length && post_map
+	const loading = post_list && (!post_list.length || !post_map)
+
+RETURN_JSX_BEGIN
+<main class={ loading ? 'relative' : '' }>
+  <CenteredLoading { ...{ loading } }/>
+{ ready ? (
+  <Master { ...{ post_list, post_map } }/>
+) : undefined }
+</main>
 RETURN_JSX_END
 }
