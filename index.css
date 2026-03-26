@@ -33,10 +33,6 @@
 	@apply motion-reduce:duration-0! motion-reduce:animate-none!;
 }
 
-button, a, .group\/shell {
-	@apply *:cursor-pointer;
-}
-
 button {
-	@apply text-left;
+	@apply cursor-pointer;
 }

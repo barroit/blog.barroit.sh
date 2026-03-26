@@ -6,7 +6,7 @@
 import { useRoute, useLocation } from 'preact-iso'
 import { useContext, useEffect, useState } from 'preact/hooks'
 
-import { PostContext } from '../index.jsx'
+import { PostListContext, PostMapContext } from '../index.jsx'
 import Button from '../lib/button.jsx'
 import { CenteredLoading, NotFoundDialog } from '../lib/ux.jsx'
 import { history_return } from '../lib/history.js'
@@ -56,7 +56,8 @@ function go_back()
 
 export default function Post()
 {
-	const { post_list, post_map } = useContext(PostContext)
+	const post_list = useContext(PostListContext)
+	const post_map = useContext(PostMapContext)
 
 	const ready = post_list && post_list.length && post_map
 	const loading = post_list && (!post_list.length || !post_map)
@@ -64,7 +65,7 @@ export default function Post()
 RETURN_JSX_BEGIN
 <main class={ loading ? 'relative' : '' }>
   <CenteredLoading { ...{ loading } }/>
-  <Header class='mb-4'>
+  <Header>
     <Button onclick={ go_back }>return</Button>
   </Header>
 { ready ? (

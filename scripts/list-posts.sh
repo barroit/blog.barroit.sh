@@ -44,16 +44,13 @@ while read src; do
 
 	tag=$(jq -s . .tmp-$$)
 
-	now=$(date +'%Y-%m-%dT%H:%M:%S%z')
+	now=$(date +'%Y-%m-%dT%H:%M:%S%z' | sed 's/\(..\)$/:\1/')
 	birth=$(git log --format=%aI --follow --diff-filter=A -- $src | tail -1)
 	modify=$(git log --format=%aI -1 -- $src)
 
 	if [ -n "$(git status --porcelain -- $src)" ]; then
 		modify=$now
 	fi
-
-	birth=$(printf "$birth" | sed 's/:\([[:digit:]][[:digit:]]\)$/\1/')
-	modify=$(printf "$modify" | sed 's/:\([[:digit:]][[:digit:]]\)$/\1/')
 
 	birth=${birth:-$now}
 	modify=${modify:-$now}

@@ -10,7 +10,8 @@ import Flick from './flick.jsx'
 
 export default function Button({ children, ...props })
 {
-	APPEND_CLASS(props, 'p-1 cursor-pointer')
+	APPEND_CLASS(props, 'p-1 transition-colors underline \
+			     decoration-transparent hover:decoration-black')
 
 RETURN_JSX_BEGIN
 <button { ...props }>

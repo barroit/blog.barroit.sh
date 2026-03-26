@@ -7,7 +7,7 @@ import Button from '../lib/button.jsx'
 
 export default function Header({ children, ...props })
 {
-	APPEND_CLASS(props, 'flex justify-between text-zinc-600')
+	APPEND_CLASS(props, 'mb-4 flex justify-between text-zinc-600')
 
 RETURN_JSX_BEGIN
 <header { ...props }>

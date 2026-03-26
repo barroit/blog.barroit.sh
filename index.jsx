@@ -14,7 +14,8 @@ import NotFound from './page/404.jsx'
 const post_list_uri = document.body.dataset['postList']
 const post_map_uri = document.body.dataset['postMap']
 
-export const PostContext = createContext()
+export const PostListContext = createContext()
+export const PostMapContext = createContext()
 
 function Root()
 {
@@ -43,16 +44,18 @@ function Root()
 	}, [])
 
 RETURN_JSX_BEGIN
-<div class='p-5 xl:mx-auto xl:w-5xl 2xl:w-7xl min-h-screen flex flex-col
-	    shadow-md bg-slate-50 space-y-5 *:last:flex-1'>
+<div class='py-5 px-10 md:mx-auto md:w-2xl xl:w-5xl min-h-screen flex flex-col
+            shadow-md bg-slate-50 space-y-5 *:last:flex-1'>
   <LocationProvider>
-    <PostContext value={ { post_list, post_map } }>
-      <Router>
-        <Posts path='/'/>
-        <Post path='/post/:class/:slug'/>
-        <NotFound default/>
-      </Router>
-    </PostContext>
+    <PostListContext value={ post_list }>
+      <PostMapContext value={ post_map }>
+        <Router>
+          <Posts path='/'/>
+          <Post path='/post/:class/:slug'/>
+          <NotFound default/>
+        </Router>
+      </PostMapContext>
+    </PostListContext>
   </LocationProvider>
 </div>
 RETURN_JSX_END
