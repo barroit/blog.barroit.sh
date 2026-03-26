@@ -4,6 +4,142 @@
  */
 
 @font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_THIN_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 100;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_EXTRALIGHT_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 200;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_LIGHT_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_REGULAR_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_MEDIUM_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_SEMIBOLD_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_BOLD_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_EXTRABOLD_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 800;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('FONTS_ADOBE_NOTOSANSJP_BLACK_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 900;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url('FONTS_GOOGLE_GOOGLESANS_REGULAR_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url('FONTS_GOOGLE_GOOGLESANS_ITALIC_WOFF2') format('woff2');
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url('FONTS_GOOGLE_GOOGLESANS_MEDIUM_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url('FONTS_GOOGLE_GOOGLESANS_MEDIUMITALIC_WOFF2') format('woff2');
+	font-style: italic;
+	font-weight: 500;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url('FONTS_GOOGLE_GOOGLESANS_SEMIBOLD_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url('FONTS_GOOGLE_GOOGLESANS_SEMIBOLDITALIC_WOFF2') format('woff2');
+	font-style: italic;
+	font-weight: 600;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url('FONTS_GOOGLE_GOOGLESANS_BOLD_WOFF2') format('woff2');
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Google Sans';
+	src: url('FONTS_GOOGLE_GOOGLESANS_BOLDITALIC_WOFF2') format('woff2');
+	font-style: italic;
+	font-weight: 700;
+	font-display: swap;
+}
+
+@font-face {
 	font-family: 'JetBrains Mono';
 	src: url('FONTS_JB_JETBRAINSMONO_REGULAR_WOFF2') format('woff2');
 	font-weight: 400;
@@ -37,10 +173,10 @@
 
 @font-face {
 	font-family: 'x14y20pxScoreDozer';
-	src: url('FONTS_X0Y0PX_X14Y20PXSCOREDOZER_TTF') format('truetype');
+	src: url('FONTS_X0Y0PX_X14Y20PXSCOREDOZER_WOFF2') format('WOFF2');
 }
 
 @font-face {
 	font-family: 'x16y32pxGridGazer';
-	src: url('FONTS_X0Y0PX_X16Y32PXGRIDGAZER_TTF') format('truetype');
+	src: url('FONTS_X0Y0PX_X16Y32PXGRIDGAZER_WOFF2') format('WOFF2');
 }
