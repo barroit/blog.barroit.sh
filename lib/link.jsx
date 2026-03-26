@@ -5,46 +5,14 @@
 
 import { useContext, useEffect, useRef } from 'preact/hooks'
 
-import { ShellContext } from './shell.jsx'
+import Flick from './flick.jsx'
 
-function on_click(event)
+export function LinkIntern({ children, ...props })
 {
-	event.stopPropagation()
-}
-
-function on_shell_click(link, event)
-{
-	link.current.click()
-}
-
-function drop_effect(shell, key)
-{
-	shell.current.click.delete(key)
-}
-
-export function LinkIntern({ children, node, ...props })
-{
-	const shell = useContext(ShellContext)
-	let link = useRef()
-
-	if (node)
-		link = node
-
-	useEffect(() =>
-	{
-		if (!shell)
-			return
-
-		const on_shell_click_fn = on_shell_click.bind(undefined, link)
-		const drop_effect_fn = drop_effect.bind(undefined, shell, link)
-
-		shell.current.click.set(link, on_shell_click_fn)
-		return drop_effect_fn
-	}, [])
 
 RETURN_JSX_BEGIN
-<a ref={ link } onclick={ shell ? on_click : undefined } { ...props }>
-  { children }
+<a { ...props }>
+  <Flick>{ children }</Flick>
 </a>
 RETURN_JSX_END
 }
@@ -59,7 +27,7 @@ RETURN_JSX_BEGIN
 RETURN_JSX_END
 }
 
-export function ExternMark({ children, ...props })
+export function LinkExternMark({ children, ...props })
 {
 	APPEND_CLASS(props, 'after:content-["↗"] after:ml-1')
 

@@ -25,4 +25,6 @@ define(CHILD_TEXT_OF, CHILD_OF($1).textContent)
 define(NEXT_SIBLING_OF, $1.nextSibling)
 define(PREV_SIBLING_OF, $1.previousSibling)
 
+define(T, $1.current)
+
 divert(0)dnl

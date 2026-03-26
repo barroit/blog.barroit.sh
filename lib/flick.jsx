@@ -3,36 +3,9 @@
  * Copyright 2026 Jiamu Sun <barroit@linux.com>
  */
 
-import { createContext } from 'preact'
-import { useContext, useEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef } from 'preact/hooks'
 
 import shuffle from './shuffle.js'
-
-export const FlickContext = createContext(undefined)
-
-const default_handler = {
-	pointerenter: new Map(),
-	click: new Map(),
-}
-
-export function flick_init_handler(handler_map)
-{
-	handler_map.current = structuredClone(default_handler)
-}
-
-export function flick_on_event(handler_map, event)
-{
-	const handler_entries = handler_map.current[event.type]
-	const fns = handler_entries.values()
-
-	for (const fn of fns)
-		fn(event)
-}
-
-function drop_handler(flick, key)
-{
-	flick.current.pointerenter.delete(key)
-}
 
 function pds_1d_fast(arr, min_dist, max_item)
 {
@@ -86,7 +59,7 @@ function disable_flick(ctx, spans, picked)
 		clearInterval(ctx.off_timer)
 }
 
-async function on_pointerenter(box, idx_map)
+async function start_flick(box, idx_map)
 {
 	const spans = Array.from(box.current.children)
 	const shuffled = shuffle(idx_map)
@@ -111,41 +84,30 @@ RETURN_JSX_END
 
 export default function Flick({ children, ...props })
 {
-	const flick = useContext(FlickContext)
-	const box = useRef()
-
 	if (!Array.isArray(children))
 		children = [ children ]
 
+	const box = useRef()
 	const chars = children.join('').split('')
 	const ws_regex = /\s/
-
 	const idx_map = []
-	let idx
 
-	for (idx = 0; idx < chars.length; idx++) {
-		if (ws_regex.test(chars[idx]))
-			continue
-
-		idx_map.push(idx)
+	for (let idx = 0; idx < chars.length; idx++) {
+		if (!ws_regex.test(chars[idx]))
+			idx_map.push(idx)
 	}
-
-	const on_pointerenter_fn = BIND(on_pointerenter, box, idx_map)
 
 	useEffect(() =>
 	{
-		if (!flick)
-			return
-
-		flick.current.pointerenter.set(box, on_pointerenter_fn)
-		return BIND(drop_handler, flick, box)
+		PARENT_OF(T(box)).onpointerenter = BIND(start_flick,
+							box, idx_map)
+		return () => PARENT_OF(T(box)).onpointerenter = undefined
 	}, [])
 
 	const token = chars.map(format_token)
 
 RETURN_JSX_BEGIN
-<span ref={ box } { ...props }
-      onpointerenter={ flick ? undefined : on_pointerenter_fn }>
+<span ref={ box } { ...props }>
   { token }
 </span>
 RETURN_JSX_END
