@@ -7,5 +7,5 @@ html-y := $(pubdir)/index.html
 distclean += $(html-y)
 deploy-ready-y += $(html-y)
 
-$(html-y): $(pubdir)/%: $(indexes_asmap) %
+$(html-y): $(pubdir)/%: $(indexes_asmap) $(images_asmap) %
 	$(m4) $^ >$@

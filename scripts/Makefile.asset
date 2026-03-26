@@ -9,4 +9,5 @@ $(indexes_asmap_sed):
 	mkdir -p $(@D)
 	printf '%s\n' s,^,AS, >$@
 
-$(indexes_asmap): $(script-y) $(style-y) $(post-y) $(index-y)
+$(indexes_asmap): $(script-y) $(style-y) \
+		  $(post_list-y) $(post_map-y) $(word_index-y)
