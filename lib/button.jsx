@@ -33,7 +33,7 @@ export default function Button({ children, onclick, ...props })
 RETURN_JSX_BEGIN
 <button ref={ box } { ...props }>
   <FlickContext value={ handler_map }>
-      <Flick>{ children }</Flick>
+    <Flick>{ children }</Flick>
   </FlickContext>
 </button>
 RETURN_JSX_END

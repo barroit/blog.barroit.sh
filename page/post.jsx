@@ -32,7 +32,8 @@ function Master({ post_list, post_map })
 		const data = await res.json()
 
 		set_post(data)
-	}, [])
+		return () => set_post()
+	}, [ params.slug ])
 
 RETURN_JSX_BEGIN
 <div>
@@ -45,15 +46,12 @@ RETURN_JSX_BEGIN
 RETURN_JSX_END
 }
 
-function Return()
+function go_back()
 {
-	const { route } = useLocation()
-
-	const history_return_fn = BIND(history_return, route)
-
-RETURN_JSX_BEGIN
-<Button onclick={ history_return_fn }>return</Button>
-RETURN_JSX_END
+	if (navigation.canGoBack)
+		navigation.back()
+	else
+		navigation.navigate('/')
 }
 
 export default function Post()
@@ -67,7 +65,7 @@ RETURN_JSX_BEGIN
 <main class={ loading ? 'relative' : '' }>
   <CenteredLoading { ...{ loading } }/>
   <Header class='mb-4'>
-    <Return/>
+    <Button onclick={ go_back }>return</Button>
   </Header>
 { ready ? (
   <Master { ...{ post_list, post_map } }/>
