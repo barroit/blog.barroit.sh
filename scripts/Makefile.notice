@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-notice-src := $(shell find images fonts -name 'README.txt')
+notice-src := $(shell find images fonts media -name 'README.txt')
 notice_map := $(objtree)/notice_map.m4
 
 clean += $(notice_map)

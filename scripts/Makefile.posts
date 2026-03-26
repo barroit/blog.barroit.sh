@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+onchange-src += posts/**/*
+
 postdir := $(objtree)/posts
 
-posts-src := $(shell find posts -type f)
+posts-src := $(shell find posts -type f -name '*.rst' -or -name 'README.txt')
 posts-m4 := $(addprefix $(m4dir)/,$(posts-src))
 posts-y := $(addprefix $(pubdir)/,$(posts-src:.jp.rst=.rst))
 posts-y := $(addsuffix .stamp,$(posts-y:.rst=.fjson))
