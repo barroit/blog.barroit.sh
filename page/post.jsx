@@ -18,7 +18,7 @@ function sanitize_post(post)
 	return post
 }
 
-function fixup_hash_target(box)
+function find_active_anchor(box)
 {
 	const hash = window.location.hash.slice(1)
 	const id = decodeURIComponent(hash)
@@ -37,38 +37,51 @@ function fixup_hash_target(box)
 	return next
 }
 
-function disable_image_drag(box)
+function preview_media({  })
 {
-	for (const img of box.current.getElementsByTagName('img'))
-		img.draggable = 0
+	//
 }
 
 function Content({ post })
 {
 	const box = useRef()
+	const dialog = useRef()
 
 	useEffect(() =>
 	{
-		const fixup_hash_target_fn = BIND(fixup_hash_target, box)
-		const event_args = [ 'hashchange', fixup_hash_target_fn ]
-		let target
+		const find_active_anchor_fn = BIND(find_active_anchor, box)
+		const cleanup = []
+		define(CLEANUP, cleanup.push(() => $1))dnl
 
-		box.current.insertAdjacentHTML('beforeend', post)
-		target = fixup_hash_target_fn()
+		let anchor
+		let media
 
-		if (target)
-			target.scrollIntoView()
+		box.current.insertAdjacentHTML('afterbegin', post)
 
-		disable_image_drag(box)
-		// box.current.getElementsByTagName('img')
+		media = box.current.getElementsByTagName('img')
+		anchor = find_active_anchor_fn()
 
-		window.addEventListener(...event_args)
-		return () => window.removeEventListener(...event_args)
+		if (anchor)
+			anchor.scrollIntoView()
+
+		for (const img of media)
+			img.draggable = 0
+
+		CLEANUP(PAGE_IGNORE_EVENT('hashchange', find_active_anchor_fn))
+
+		PAGE_ON_EVENT('hashchange', find_active_anchor_fn)
+		return () => cleanup.forEach(c => c())
 	}, [])
+
+	const src = 'http://192.168.50.246:3939/media/concert/miku-mm-25/1-gEeogLxn.avif'
 
 RETURN_JSX_BEGIN
 <div ref={ box } id='post'
-     class='post mx-auto max-w-[60ch] font-post tracking-wide'></div>
+     class='post mx-auto max-w-[60ch] font-post tracking-wide'>
+  <dialog class='inset-0 p-10 w-full h-[100dvh] open:flex'>
+    <img class='m-auto max-h-full object-contain' src={ src }/>
+  </dialog>
+</div>
 RETURN_JSX_END
 }
 

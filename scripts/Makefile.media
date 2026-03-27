@@ -6,8 +6,8 @@ post_m4dir := $(m4dir)/posts
 
 media-o := $(shell find media -type f -name '*.jpeg' -or -name '*.mov' \
 			      -or -name 'README.txt' | \
-		   sed 's/\(.*\)\.jpeg/\1.avif \1_xthumb.avif/; \
-			s/\(.*\)\.mov/\1.webm \1.mp4 \1_ythumb.avif/')
+		   sed 's/\(.*\)\.jpeg/\1.avif/; \
+			s/\(.*\)\.mov/\1.webm \1.mp4/')
 media-y := $(addsuffix .stamp,$(addprefix $(pubdir)/,$(media-o)))
 
 media_asmap := $(objtree)/media_asmap.m4
@@ -19,9 +19,6 @@ distclean += $(addsuffix *,$(basename $(basename $(media-y))))
 %.avif: %.jpeg
 	$(magick) $< -auto-orient -strip -quality 60 $@
 
-%_xthumb.avif: %.jpeg
-	$(magick) $< -auto-orient -strip -resize 390x -quality 39 $@
-
 %.webm: %.mov
 	$(ffmpeg) -y -i $< -c:v av1_nvenc \
 		  -preset p7 -cq 30 -b:v 0 -c:a libopus $@
@@ -30,9 +27,6 @@ distclean += $(addsuffix *,$(basename $(basename $(media-y))))
 	$(ffmpeg) -y -i $< -c:v hevc_nvenc -preset p7 -cq 28 \
 	          -pix_fmt p010le -profile:v main10 -tag:v hvc1 \
 	          -c:a aac -b:a 192k -movflags +faststart $@
-
-%_ythumb.avif: %.mov
-	$(magick) $<[0] -auto-orient -strip -resize 390x -quality 39 $@
 
 $(media_asmap_sed):
 	mkdir -p $(@D)

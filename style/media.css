@@ -3,16 +3,24 @@
  * Copyright 2026 Jiamu Sun <39@barroit.sh>
  */
 
-#post img:not(.math) {
-	@apply mx-auto mt-4 max-h-90 select-none;
+#post img:not(dialog img, .math), #post video {
+	@apply mx-auto mt-6 max-h-90 select-none;
 }
 
-#post img:not(.math img, .math) {
+#post img:not(.math img, .math), #post video {
 	@apply border-4 border-luka-pink mask-fade-edge [--span:4px];
+}
+
+#post .sphinx-contrib-video-container {
+	@apply px-10;
 }
 
 #post figure {
 	@apply mx-auto w-fit;
+}
+
+#post figcaption {
+	@apply mb-6;
 }
 
 #post figcaption > p {
@@ -25,6 +33,4 @@
 
 #post img.math {
 	@apply inline-block align-baseline;
-	/* display: inline-block; */
-	/* vertical-align: middle; */
 }

@@ -27,8 +27,9 @@ word_index-o := $(objtree)/word_index.json
 word_index-y := $(pubdir)/$(word_index-o).stamp
 
 clean += $(shell test -d $(postdir) && find $(postdir) -type f)
-clean += $(post_header) $(post_master) $(posts-m4)
-clean += $(posts_asmap) $(posts_asmap_sed) $(post_list-o)*
+clean += $(post_header) $(post_master) $(posts-m4) \
+	 $(posts_asmap) $(posts_asmap_sed) \
+	 $(post_list-o)* $(word_index-o) $(post_map-o)
 
 distclean += $(shell test -d $(pubdir)/math && find $(pubdir)/math -type f)
 distclean += $(addsuffix *,$(basename $(basename $(word_index-y) $(posts-y) \
