@@ -108,24 +108,20 @@ RETURN_JSX_END
 
 export default function Posts()
 {
-	const post_list = useContext(PostListContext)
+	const [ post_list, loading ] = useContext(PostListContext)
 	const ready = post_list && post_list.length
 
 RETURN_JSX_BEGIN
 <main class='relative'>
-{ !ready ? (
-  <CenteredLoading loading={ post_list && !post_list.length }/>
-) : undefined }
+  <CenteredLoading { ...{ loading } }/>
   <Header>
     <div class='hidden md:block'></div>
   </Header>
-{ post_list ? (
   <ul class='mt-6 md:mt-0 space-y-10'>
-  { post_list.map(post => (
+  { post_list ? post_list.map(post => (
     <Post { ...{ post } } />
-  )) }
+  )) : undefined }
   </ul>
-) : undefined }
 </main>
 RETURN_JSX_END
 }

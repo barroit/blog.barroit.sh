@@ -44,7 +44,7 @@ function preview_media(dialog, event)
 
 	FIRST_CHILD(dialog).src = url
 
-	document.documentElement.dataset.dialog = ''
+	document.documentElement.dataset.noscroll = ''
 	dialog.showModal()
 }
 
@@ -55,7 +55,7 @@ function on_dialog_click(event)
 
 function on_dialog_close(event)
 {
-	delete document.documentElement.dataset.dialog
+	delete document.documentElement.dataset.noscroll
 
 	FIRST_CHILD(T(event)).removeAttribute('src')
 }
@@ -105,45 +105,14 @@ function Content({ post })
 	}, [])
 
 RETURN_JSX_BEGIN
-<div ref={ box } id='post' class='mx-auto max-w-[60ch] font-post tracking-wide'>
+<div ref={ box } id='post'
+     class='mx-auto max-w-[60ch] font-post tracking-wide'>
   <dialog class='inset-0 p-10 w-full h-[100dvh] open:flex'
-          onclick={ on_dialog_click }
-	  onclose={ on_dialog_close }>
+          onclick={ on_dialog_click } onclose={ on_dialog_close }>
     <img class='m-auto max-h-full'/>
   </dialog>
 </div>
 RETURN_JSX_END
-}
-
-function Master({ post_list, post_map })
-{
-	const { params } = useRoute()
-	const [ post, set_post ] = useState()
-
-	const post_pos = post_map[params.slug]
-	const post_meta = post_list[post_pos]
-
-	const found = HAS_PROP(post_map, params.slug) &&
-		      post_meta.class == params.class
-
-	useEffect(async () =>
-	{
-		if (!found)
-			return
-
-		const res = await fetch(post_meta.uri)
-		const __data = await res.text()
-		const data = sanitize_post(__data)
-
-		set_post(data)
-		return () => set_post()
-	}, [ params.slug ])
-
-RETURN_JSX_BEGIN !found ? (
-<NotFoundDialog part='Slug' content={ params.slug }/>
-) : post ? (
-<Content { ...{ post } }/>
-) : undefined RETURN_JSX_END
 }
 
 function go_back()
@@ -153,23 +122,43 @@ function go_back()
 
 export default function Post()
 {
-	const post_list = useContext(PostListContext)
+	const { params } = useRoute()
+	const [ post, set_post ] = useState()
+
+	const [ post_list, post_loading ] = useContext(PostListContext)
 	const post_map = useContext(PostMapContext)
 
-	const ready = post_list && post_list.length && post_map
-	const loading = post_list && (!post_list.length || !post_map)
+	useEffect(() =>
+	{
+		if (post_loading || !post_map)
+			return
 
-RETURN_JSX_BEGIN
-<main class={ loading ? 'relative' : '' }>
-{ !ready ? (
-  <CenteredLoading { ...{ loading } }/>
-) : undefined }
+		const post_pos = post_map[params.slug]
+		const post_meta = post_list[post_pos]
+
+		const found = HAS_PROP(post_map, params.slug) &&
+			      post_meta.class == params.class
+
+		if (!found) {
+			set_post(-1)
+			return
+		}
+
+		fetch(post_meta.uri).then(res => res.text())
+				    .then(sanitize_post).then(set_post)
+	}, [ post_loading || !post_map ])
+
+RETURN_JSX_BEGIN post == -1 ? (
+<NotFoundDialog part='Slug' content={ params.slug }/>
+) : (
+<main class='relative'>
+  <CenteredLoading loading={ post_loading || !post_map || !post }/>
   <Header>
     <Button onclick={ go_back }>return</Button>
   </Header>
-{ ready ? (
-  <Master { ...{ post_list, post_map } }/>
+{ post ? (
+  <Content { ...{ post } }/>
 ) : undefined }
 </main>
-RETURN_JSX_END
+) RETURN_JSX_END
 }
