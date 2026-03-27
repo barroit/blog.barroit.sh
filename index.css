@@ -24,11 +24,28 @@
 
 	--color-dark-blue: oklch(0.1063 0.0172 259.54);
 
+
+	--font-google_sans: 'Google Sans';
 	--font-jetbrans_mono: 'JetBrains Mono';
+	--font-note_sans_jp: 'Noto Sans JP';
 	--font-x14y20px_score_dozer: 'x14y20pxScoreDozer';
 	--font-x16y32px_grid_gazer: 'x16y32pxGridGazer';
 
 	--font-mono: var(--font-jetbrans_mono);
+	--font-post: var(--font-google_sans), var(--font-note_sans_jp);
+}
+
+@utility mask-fade-edge {
+	mask-position: center;
+	mask-size: 100% 100%;
+
+	mask-repeat: no-repeat;
+	mask-composite: intersect;
+
+	mask-image: linear-gradient(to right, transparent, #fff var(--span),
+				    #fff calc(100% - var(--span)), transparent),
+		    linear-gradient(to bottom, transparent, #fff var(--span),
+				    #fff calc(100% - var(--span)), transparent);
 }
 
 *, ::before, ::after {

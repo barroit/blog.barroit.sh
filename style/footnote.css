@@ -1,0 +1,16 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * Copyright 2026 Jiamu Sun <39@barroit.sh>
+ */
+
+#post :is(.footnote, .citation) > :first-child {
+	@apply float-left font-semibold pr-1;
+}
+
+#post :is(.footnote, .citation) > :last-child {
+	@apply ml-8;
+}
+
+#post :is(.footnote, .citation) {
+	@apply text-gray-600;
+}

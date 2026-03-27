@@ -3,6 +3,28 @@
  * Copyright 2026 Jiamu Sun <39@barroit.sh>
  */
 
-#post h1 {
-	@apply text-3xl mb-5;
+@import './sizing.css';
+@import './heading.css';
+@import './anchor.css';
+@import './codeblock.css';
+@import './list.css';
+@import './admonition.css';
+@import './table.css';
+@import './media.css';
+@import './footnote.css';
+
+#post .guilabel {
+	@apply px-1 rounded-lg border-1 border-gray-200 bg-sky-50 text-sm;
+}
+
+#post .footnote-reference {
+	@apply align-super text-xs;
+}
+
+#post .classifier {
+	@apply before:mx-1 before:content-[":"];
+}
+
+#post hr {
+	@apply border-gray-200 my-8;
 }

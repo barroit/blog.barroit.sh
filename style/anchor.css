@@ -1,0 +1,30 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * Copyright 2026 Jiamu Sun <39@barroit.sh>
+ */
+
+#post a {
+	@apply text-blue-600 underline
+	       decoration-gray-200 hover:decoration-gray-400;
+}
+
+#post :is(h1, h2, h3, h4, h5, h6,
+	  caption, .code-block-caption, figcaption > p, [id]) {
+	@apply scroll-mt-12;
+}
+
+#post .headerlink {
+	@apply ml-2 text-gray-300 invisible;
+}
+
+#post :is(h1, h2, h3, h4, h5, h6,
+	  caption, .code-block-caption, figcaption > p):hover > .headerlink {
+	@apply visible;
+}
+
+#post .targeting > :is(h1, h2, h3, h4, h5, h6):first-of-type,
+#post :is(figure).targeting figcaption,
+#post .literal-block-wrapper.targeting .code-block-caption,
+#post table.targeting caption {
+	@apply bg-yellow-100;
+}

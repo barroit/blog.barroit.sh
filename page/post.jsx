@@ -18,17 +18,48 @@ function sanitize_post(post)
 	return post
 }
 
+function fixup_hash_target(box)
+{
+	const hash = window.location.hash.slice(1)
+	const id = decodeURIComponent(hash)
+	const prev = box.current.getElementsByClassName('targeting')[0]
+	const next = document.getElementById(id)
+
+	if (prev)
+		prev.classList.remove('targeting')
+
+	if (!id)
+		return
+
+	if (next)
+		next.classList.add('targeting')
+
+	return next
+}
+
 function Content({ post })
 {
 	const box = useRef()
 
 	useEffect(() =>
 	{
+		const fixup_hash_target_fn = BIND(fixup_hash_target, box)
+		const event_args = [ 'hashchange', fixup_hash_target_fn ]
+		let target
+
 		box.current.insertAdjacentHTML('beforeend', post)
+		target = fixup_hash_target_fn()
+
+		if (target)
+			target.scrollIntoView()
+
+		window.addEventListener(...event_args)
+		return () => window.removeEventListener(...event_args)
 	}, [])
 
 RETURN_JSX_BEGIN
-<div ref={ box } id='post' class='post mx-auto w-[60ch]'></div>
+<div ref={ box } id='post'
+     class='post mx-auto max-w-[60ch] font-post tracking-wide'></div>
 RETURN_JSX_END
 }
 
@@ -65,10 +96,7 @@ RETURN_JSX_BEGIN !found ? (
 
 function go_back()
 {
-	if (navigation.canGoBack)
-		navigation.back()
-	else
-		navigation.navigate('/')
+	navigation.navigate('/')
 }
 
 export default function Post()
@@ -81,7 +109,9 @@ export default function Post()
 
 RETURN_JSX_BEGIN
 <main class={ loading ? 'relative' : '' }>
+{ !ready ? (
   <CenteredLoading { ...{ loading } }/>
+) : undefined }
   <Header>
     <Button onclick={ go_back }>return</Button>
   </Header>

@@ -1,0 +1,21 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * Copyright 2026 Jiamu Sun <39@barroit.sh>
+ */
+
+#post img {
+	@apply mx-auto mt-4 max-h-90
+	       border-4 border-luka-pink mask-fade-edge [--span:4px];
+}
+
+#post figure {
+	@apply mx-auto w-fit;
+}
+
+#post figcaption > p {
+	@apply pl-[calc(var(--spacing)*2+1ch)];
+}
+
+#post figcaption > * {
+	@apply mx-auto w-fit;
+}

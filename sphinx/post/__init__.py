@@ -34,7 +34,6 @@ def setup(app):
 	app.connect('env-merge-info', merge_info)
 
 	return {
-		'version': '0.1',
 		'parallel_read_safe': 1,
 		'parallel_write_safe': 1,
 	}

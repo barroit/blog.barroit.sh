@@ -18,4 +18,5 @@ html_copy_source = 0
 
 extensions = [
 	'post',
+	'wrap',
 ]

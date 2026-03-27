@@ -1,0 +1,44 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * Copyright 2026 Jiamu Sun <39@barroit.sh>
+ */
+
+#post .table-wrapper {
+	@apply p-1 pb-3;	
+}
+
+#post table {
+	@apply mx-auto shadow-sm;	
+}
+
+#post thead {
+	@apply bg-gray-100;
+}
+
+#post table p {
+	@apply my-0;
+}
+
+#post tr {
+	@apply border-b-1 border-gray-200;
+}
+
+#post :is(th, td) {
+	@apply px-2 border-x border-gray-200;
+}
+
+#post th {
+	@apply py-2 font-medium;
+}
+
+#post td {
+	@apply py-1;
+}
+
+#post :is(th, td):first-child {
+	@apply border-l-0;
+}
+
+#post :is(th, td):last-child {
+	@apply border-r-0;
+}

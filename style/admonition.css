@@ -1,0 +1,47 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * Copyright 2026 Jiamu Sun <39@barroit.sh>
+ */
+divert(-1)
+
+define(VARIATE,[[dnl
+#post .admonition.$1 { @apply border-l-$3; }
+#post .$1 > .admonition-title { @apply bg-$4; }
+#post .$1 > .admonition-title::before { @apply mask-[url($2)] bg-$3; }
+]])
+
+divert(0)dnl
+
+#post .admonition {
+	@apply my-4 rounded-sm border-l-4 shadow-xs text-xs overflow-hidden;
+}
+
+#post .admonition > p {
+	@apply my-0 p-2;
+}
+
+#post p.admonition-title {
+	@apply flex items-center gap-x-2 font-medium;
+}
+
+#post p.admonition-title::before {
+	@apply content-[""] size-4 block mask-cover;
+}
+
+VARIATE(attention, IMAGES_GOOGLE_ERROR_SVG, red-400, red-100)dnl
+
+VARIATE(caution, IMAGES_GOOGLE_FRAME_EXCLAMATION_SVG, orange-500, orange-200)dnl
+
+VARIATE(danger, IMAGES_GOOGLE_DANGEROUS_SVG, red-500, red-200)dnl
+
+VARIATE(error, IMAGES_GOOGLE_ERROR_SVG, rose-500, rose-200)dnl
+
+VARIATE(hint, IMAGES_GOOGLE_HELP_SVG, green-500, green-200)dnl
+
+VARIATE(important, IMAGES_GOOGLE_MODE_HEAT_SVG, green-600, green-300)dnl
+
+VARIATE(note, IMAGES_GOOGLE_STYLUS_SVG, sky-500, sky-200)dnl
+
+VARIATE(tip, IMAGES_GOOGLE_INFO_SVG, green-400, green-100)dnl
+
+VARIATE(warning, IMAGES_GOOGLE_WARNING_SVG, amber-500, amber-200)dnl

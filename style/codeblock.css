@@ -1,0 +1,59 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * Copyright 2026 Jiamu Sun <39@barroit.sh>
+ */
+
+#post :is(code, kbd, pre, samp) {
+	@apply font-mono;
+}
+
+#post :is(code, kbd, blockquote, .highlight, .code-block-caption) {
+	@apply bg-gray-100;
+}
+
+#post code {
+	@apply px-1 rounded-sm border-1 border-gray-200 text-xs;
+}
+
+#post .highlight > pre {
+	@apply px-4 py-3 overflow-auto;
+}
+
+#post kbd {
+	@apply px-1 rounded-sm border-1 border-gray-500 text-xs;
+	box-shadow: 0 .0625rem 0 #0003,
+		    inset 0 0 0 .125rem var(--color-gray-100);
+}
+
+#post blockquote {
+	@apply py-2 px-4 border-l-4 border-gray-200;
+}
+
+#post blockquote .attribution {
+	@apply text-right font-semibold;
+}
+
+#post .highlight {
+	@apply my-4 rounded-md;
+}
+
+#post .code-block-caption {
+	@apply mt-4 px-3.5 py-2.5 rounded-t-md border-b-1 border-gray-200;
+}
+
+#post .caption-text {
+	@apply text-sm text-gray-500;
+}
+
+#post :is(.highlight, .code-block-caption) {
+	@apply text-gray-800;
+}
+
+#post .code-block-caption+div > .highlight {
+	@apply mt-0 rounded-t-none;
+}
+
+#post .highlight span.linenos {
+	@apply mr-3.5 pr-3.5 inline-block text-gray-500 select-none;
+	box-shadow: -.0625rem 0 var(--color-gray-500) inset;
+}
