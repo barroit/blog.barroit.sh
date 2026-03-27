@@ -5,12 +5,10 @@ from docutils.transforms import Transform
 
 from .image import wrap_image
 from .table import wrap_table
-from .figure import wrap_figure
 
 wraps = [
 	wrap_image,
 	wrap_table,
-	wrap_figure,
 ]
 
 class wrapper(Transform):

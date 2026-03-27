@@ -109,10 +109,13 @@ RETURN_JSX_END
 export default function Posts()
 {
 	const post_list = useContext(PostListContext)
+	const ready = post_list && post_list.length
 
 RETURN_JSX_BEGIN
 <main class='relative'>
+{ !ready ? (
   <CenteredLoading loading={ post_list && !post_list.length }/>
+) : undefined }
   <Header>
     <div class='hidden md:block'></div>
   </Header>

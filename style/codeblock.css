@@ -45,7 +45,7 @@
 	@apply mt-4 px-3.5 py-2.5 rounded-t-md border-b-1 border-gray-200;
 }
 
-#post .caption-text {
+#post .caption-text, #post figcaption > p {
 	@apply text-sm text-gray-500;
 }
 

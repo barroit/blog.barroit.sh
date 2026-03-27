@@ -99,9 +99,9 @@ export default function Flick({ children, ...props })
 
 	useEffect(() =>
 	{
-		PARENT_OF(T(box)).onpointerenter = BIND(start_flick,
+		PARENT(C(box)).onpointerenter = BIND(start_flick,
 							box, idx_map)
-		return () => PARENT_OF(T(box)).onpointerenter = undefined
+		return () => PARENT(C(box)).onpointerenter = undefined
 	}, [])
 
 	const token = chars.map(format_token)

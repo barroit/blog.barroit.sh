@@ -3,10 +3,22 @@
 
 from docutils import nodes
 
-def wrap_image(document):
-	for image in list(document.findall(nodes.image)):
-		if not isinstance(image.parent, nodes.figure):
-			box = nodes.container(classes = [ 'image-wrapper' ])
+expand_html = """
+<button class="image-expand">
+  <div class="image-expand-canvas">
+    <div class="image-expand-icon"></div>
+  </div>
+</button>
+"""
 
-			image.parent.replace(image, box)
-			box.append(image)
+def wrap_image(document):
+	__expand = nodes.raw('', expand_html, format='html')
+	__box = nodes.container(classes = [ 'image-wrapper', 'group' ])
+
+	for image in list(document.findall(nodes.image)):
+		expand = __expand.deepcopy()
+		box = __box.copy()
+
+		image.parent.replace(image, box)
+		box.append(image)
+		box.append(expand)

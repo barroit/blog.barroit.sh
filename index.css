@@ -55,3 +55,7 @@
 button {
 	@apply cursor-pointer;
 }
+
+dialog {
+	@apply max-w-none max-h-none;
+}

@@ -3,12 +3,20 @@
  * Copyright 2026 Jiamu Sun <39@barroit.sh>
  */
 
+#post .image-wrapper {
+	@apply relative mx-auto w-fit;
+}
+
 #post img:not(dialog img, .math), #post video {
-	@apply mx-auto mt-6 max-h-90 select-none;
+	@apply mt-6 max-h-90 lg:max-h-120 select-none;
 }
 
 #post img:not(.math img, .math), #post video {
 	@apply border-4 border-luka-pink mask-fade-edge [--span:4px];
+}
+
+#post .math img {
+	@apply mx-auto mb-6;
 }
 
 #post .sphinx-contrib-video-container {
@@ -33,4 +41,18 @@
 
 #post img.math {
 	@apply inline-block align-baseline;
+}
+
+#post .image-expand {
+	@apply absolute inset-0 m-[4px] flex outline-none transition
+	       opacity-0 group-hover:opacity-100 focus-visible:opacity-100
+	       group-hover:bg-zinc-800/60 focus-visible:bg-zinc-800/60;
+}
+
+#post .image-expand-canvas {
+	@apply m-auto p-2 rounded-full bg-gray-200;
+}
+
+#post .image-expand-icon {
+	@apply bg-gray-700 size-6 mask-[url(IMAGES_GOOGLE_OPEN_IN_FULL_SVG)];
 }

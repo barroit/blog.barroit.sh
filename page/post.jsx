@@ -14,6 +14,7 @@ import Header from './header.jsx'
 function sanitize_post(post)
 {
 	post = post.replaceAll(/style="width: ([\d.]+%)"/g, 'width="$1"')
+	post = post.replaceAll(/style=".+"/g, '')
 
 	return post
 }
@@ -22,7 +23,7 @@ function find_active_anchor(box)
 {
 	const hash = window.location.hash.slice(1)
 	const id = decodeURIComponent(hash)
-	const prev = box.current.getElementsByClassName('targeting')[0]
+	const prev = C(box).getElementsByClassName('targeting')[0]
 	const next = document.getElementById(id)
 
 	if (prev)
@@ -37,35 +38,65 @@ function find_active_anchor(box)
 	return next
 }
 
-function preview_media({  })
+function preview_media(dialog, event)
 {
-	//
+	const url = T(event).dataset.url
+
+	FIRST_CHILD(dialog).src = url
+
+	document.documentElement.dataset.dialog = ''
+	dialog.showModal()
+}
+
+function on_dialog_click(event)
+{
+	T(event).close()
+}
+
+function on_dialog_close(event)
+{
+	delete document.documentElement.dataset.dialog
+
+	FIRST_CHILD(T(event)).removeAttribute('src')
 }
 
 function Content({ post })
 {
 	const box = useRef()
-	const dialog = useRef()
 
 	useEffect(() =>
 	{
+		const dialog = LAST_CHILD(C(box))
 		const find_active_anchor_fn = BIND(find_active_anchor, box)
+		const preview_media_fn = BIND(preview_media, dialog)
+
 		const cleanup = []
 		define(CLEANUP, cleanup.push(() => $1))dnl
 
 		let anchor
 		let media
 
-		box.current.insertAdjacentHTML('afterbegin', post)
+		C(box).insertAdjacentHTML('afterbegin', post)
 
-		media = box.current.getElementsByTagName('img')
+		media = C(box).getElementsByTagName('img')
 		anchor = find_active_anchor_fn()
 
 		if (anchor)
 			anchor.scrollIntoView()
 
-		for (const img of media)
+		for (const img of media) {
+			const btn = NEXT_SIBLING(img)
+
 			img.draggable = 0
+
+			if (!CLASSES(PARENT(img)).contains('image-wrapper'))
+				continue
+
+			btn.dataset.url = img.src
+
+			ON_EVENT(btn, 'click', preview_media_fn)
+			CLEANUP(IGNORE_EVENT(btn, 'click', preview_media_fn))
+		}
 
 		CLEANUP(PAGE_IGNORE_EVENT('hashchange', find_active_anchor_fn))
 
@@ -73,13 +104,12 @@ function Content({ post })
 		return () => cleanup.forEach(c => c())
 	}, [])
 
-	const src = 'http://192.168.50.246:3939/media/concert/miku-mm-25/1-gEeogLxn.avif'
-
 RETURN_JSX_BEGIN
-<div ref={ box } id='post'
-     class='post mx-auto max-w-[60ch] font-post tracking-wide'>
-  <dialog class='inset-0 p-10 w-full h-[100dvh] open:flex'>
-    <img class='m-auto max-h-full object-contain' src={ src }/>
+<div ref={ box } id='post' class='mx-auto max-w-[60ch] font-post tracking-wide'>
+  <dialog class='inset-0 p-10 w-full h-[100dvh] open:flex'
+          onclick={ on_dialog_click }
+	  onclose={ on_dialog_close }>
+    <img class='m-auto max-h-full'/>
   </dialog>
 </div>
 RETURN_JSX_END

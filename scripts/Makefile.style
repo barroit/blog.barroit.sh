@@ -15,7 +15,9 @@ distclean += $(addsuffix *,$(basename $(basename $(style-y))))
 
 $(m4dir)/style/font.css: $(fonts_asmap)
 
-$(m4dir)/index.css $(m4dir)/style/admonition.css: $(images_asmap)
+$(m4dir)/index.css \
+$(m4dir)/style/admonition.css \
+$(m4dir)/style/media.css: $(images_asmap)
 
 $(__html-m4): index.html
 	mkdir -p $(@D)
