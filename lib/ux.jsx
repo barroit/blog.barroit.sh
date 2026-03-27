@@ -56,24 +56,24 @@ export function NotFoundDialog({ part, content })
 {
 
 RETURN_JSX_BEGIN
-<dialog open class='inset-0 w-screen h-screen flex'>
+<div class='absolute inset-0 w-screen h-screen flex bg-white'>
   <button onclick={ go_back }
           class='m-auto p-3 w-75 rounded-lg shadow-sm
                  transition HOT(bg-slate-100) ACTIVE(scale-90) space-y-5'>
-    <span class='max-w-75 flex justify-center gap-x-5'>
+    <div class='max-w-75 flex justify-center gap-x-5'>
       <img class='h-16' src='IMAGES_AMALA_FROWN_PNG'/>
-      <span class='mt-1 min-w-0 space-y-2'>
-        <span class='block text-xl'>Unknown { part }</span>
-        <span class='px-1 block text-sm text-zinc-700 wrap-break-word'>
+      <div class='mt-1 min-w-0 space-y-2'>
+        <p class='text-xl'>Unknown { part }</p>
+        <p class='px-1 block text-sm text-zinc-700 wrap-break-word'>
           { content }
-        </span>
-      </span>
-    </span>
-    <span class='mx-auto w-fit font-x16y32px_grid_gazer tracking-widest'>
-      <span class='pointer-coarse:hidden'>click to return</span>
-      <span class='pointer-fine:hidden'>tap to return</span>
-    </span>
+        </p>
+      </div>
+    </div>
+    <div class='mx-auto w-fit font-x16y32px_grid_gazer tracking-widest'>
+      <p class='pointer-coarse:hidden'>click to return</p>
+      <p class='pointer-fine:hidden'>tap to return</p>
+    </div>
   </button>
-</dialog>
+</div>
 RETURN_JSX_END
 }
