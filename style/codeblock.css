@@ -11,6 +11,10 @@
 	@apply bg-gray-100;
 }
 
+#post :is(blockquote, .highlight) {
+	@apply shadow-sm;
+}
+
 #post code {
 	@apply px-1 rounded-sm border-1 border-gray-200 text-xs;
 }

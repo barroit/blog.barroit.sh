@@ -3,9 +3,12 @@
  * Copyright 2026 Jiamu Sun <39@barroit.sh>
  */
 
-#post img {
-	@apply mx-auto mt-4 max-h-90
-	       border-4 border-luka-pink mask-fade-edge [--span:4px];
+#post img:not(.math) {
+	@apply mx-auto mt-4 max-h-90 select-none;
+}
+
+#post img:not(.math img, .math) {
+	@apply border-4 border-luka-pink mask-fade-edge [--span:4px];
 }
 
 #post figure {
@@ -18,4 +21,10 @@
 
 #post figcaption > * {
 	@apply mx-auto w-fit;
+}
+
+#post img.math {
+	@apply inline-block align-baseline;
+	/* display: inline-block; */
+	/* vertical-align: middle; */
 }

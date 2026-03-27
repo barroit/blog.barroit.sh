@@ -37,6 +37,12 @@ function fixup_hash_target(box)
 	return next
 }
 
+function disable_image_drag(box)
+{
+	for (const img of box.current.getElementsByTagName('img'))
+		img.draggable = 0
+}
+
 function Content({ post })
 {
 	const box = useRef()
@@ -52,6 +58,9 @@ function Content({ post })
 
 		if (target)
 			target.scrollIntoView()
+
+		disable_image_drag(box)
+		// box.current.getElementsByTagName('img')
 
 		window.addEventListener(...event_args)
 		return () => window.removeEventListener(...event_args)

@@ -29,7 +29,10 @@ word_index-y := $(pubdir)/$(word_index-o).stamp
 clean += $(shell test -d $(postdir) && find $(postdir) -type f)
 clean += $(post_header) $(post_master) $(posts-m4)
 clean += $(posts_asmap) $(posts_asmap_sed) $(post_list-o)*
-distclean += $(addsuffix *,$(basename $(basename $(posts-y))))
+
+distclean += $(shell test -d $(pubdir)/math && find $(pubdir)/math -type f)
+distclean += $(addsuffix *,$(basename $(basename $(word_index-y) $(posts-y) \
+						 $(post_list-y) $(post_map-y))))
 
 $(post_header):
 	mkdir -p $(@D)
@@ -45,8 +48,15 @@ $(post_index): $(posts-m4) $(post_master)
 	rm -f $(postdir)/environment.pickle
 	$(sphinx) --conf-dir sphinx $(post_m4dir) $(postdir)
 
-posts/%.html: $(post_index)
+	mkdir -p $(pubdir)/math
+	cp $(postdir)/_images/math/* $(pubdir)/math
+
+posts/%.html1: $(post_index)
 	jq -r .body $(postdir)/$*.*fjson >$@
+
+posts/%.html: posts/%.html1
+	sed 's,src="\(\.\./\)\+_images/\(math/.\+\)\.svg",src="/\2.svg",g' \
+	    $< >$@
 
 $(posts_asmap_sed):
 	mkdir -p $(@D)
