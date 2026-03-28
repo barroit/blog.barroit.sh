@@ -124,13 +124,15 @@ export default function Post()
 {
 	const { params } = useRoute()
 	const [ post, set_post ] = useState()
-
 	const [ post_list, post_loading ] = useContext(PostListContext)
 	const post_map = useContext(PostMapContext)
 
+	const meta_loading = post_loading || !post_map
+	const loading = meta_loading || !post
+
 	useEffect(() =>
 	{
-		if (post_loading || !post_map)
+		if (meta_loading)
 			return
 
 		const post_pos = post_map[params.slug]
@@ -146,13 +148,13 @@ export default function Post()
 
 		fetch(post_meta.uri).then(res => res.text())
 				    .then(sanitize_post).then(set_post)
-	}, [ post_loading || !post_map ])
+	}, [ meta_loading ])
 
 RETURN_JSX_BEGIN post == -1 ? (
 <NotFoundDialog part='Slug' content={ params.slug }/>
 ) : (
 <main class='relative'>
-  <CenteredLoading loading={ post_loading || !post_map || !post }/>
+  <CenteredLoading { ...{ loading } }/>
   <Header>
     <Button onclick={ go_back }>return</Button>
   </Header>

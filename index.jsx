@@ -22,7 +22,7 @@ function Root()
 {
 	const [ post_list, set_post_list ] = useState()
 	const [ post_map, set_post_map ] = useState()
-	const loading = post_list && !post_list.length
+	const post_loading = post_list && !post_list.length
 
 	useEffect(() =>
 	{
@@ -36,7 +36,7 @@ RETURN_JSX_BEGIN
 <div class='py-5 px-10 md:mx-auto md:w-2xl xl:w-5xl min-h-screen flex flex-col
             shadow-md bg-slate-50 space-y-5 *:last:flex-1'>
   <LocationProvider>
-    <PostListContext value={ [ post_list, loading ] }>
+    <PostListContext value={ [ post_list, post_loading ] }>
       <PostMapContext value={ post_map }>
         <Router>
           <Posts path='/'/>
