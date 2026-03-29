@@ -29,11 +29,11 @@ concurrently ?= concurrently
 wrangler ?= wrangler
 
 lan-ip      := ./scripts/lan-ip.py
+list-posts  := ./scripts/list-posts.sh
 ln-unique   := ./scripts/ln-unique.sh
 map-asset   := ./scripts/map-asset.sh
 map-license := ./scripts/map-license.sh
 map-notice  := ./scripts/map-notice.sh
-list-posts  := ./scripts/list-posts.sh
 
 objtree := build
 m4dir := $(objtree)/m4

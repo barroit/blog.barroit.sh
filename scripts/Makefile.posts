@@ -74,7 +74,7 @@ $(post_list-o): $(posts_asmap) $(post_list-o)1
 	$(m4) $^ >$@
 
 $(word_index-o): $(post_index)
-	jq -c <$< >$@
+	jq -c '.alltitles |= walk(if . == null then "" else . end)' <$< >$@
 
 $(post_map-o): $(post_list-o)
 	jq 'to_entries | INDEX(.value.slug) | map_values(.key)' $< >$@
