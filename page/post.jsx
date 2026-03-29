@@ -123,13 +123,11 @@ export default function Post()
 		if (meta_loading)
 			return
 
-		const post_pos = post_map[params.slug]
+		const post_path = `${params.class}/${params.slug}`
+		const post_pos = post_map[post_path]
 		const post_meta = post_list[post_pos]
 
-		const found = HAS_PROP(post_map, params.slug) &&
-			      post_meta.class == params.class
-
-		if (!found) {
+		if (!HAS_PROP(post_map, post_path)) {
 			set_post(-1)
 			return
 		}
