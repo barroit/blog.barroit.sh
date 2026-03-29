@@ -87,9 +87,12 @@ RETURN_JSX_BEGIN
     ) : undefined }
     </div>
     <Field class='mt-3' icon='IMAGES_GOOGLE_SELL_SVG'>
-      <div class='*:not-last:after:content-[","] space-x-[1ch]'>
+      <div>
       { post.tag.map(tag => tag.class ? undefined : (
-        <span>{ tag.master }</span>
+        <>
+          <span>{ tag.master }</span>
+          <span class='last:hidden'>, </span>
+        </>
       )) }
       </div>
     </Field>
