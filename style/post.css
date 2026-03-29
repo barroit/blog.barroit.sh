@@ -28,3 +28,7 @@
 #post hr {
 	@apply border-gray-200 my-8;
 }
+
+#post em {
+	@apply not-italic;
+}
