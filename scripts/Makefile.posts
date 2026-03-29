@@ -7,8 +7,14 @@ postdir := $(objtree)/posts
 posts-src := $(shell find posts -type f -name '*.rst' -or -name 'README.txt')
 posts-helper := $(wildcard posts/*.m4)
 posts-m4 := $(addprefix $(m4dir)/,$(posts-src))
-posts-y := $(addprefix $(pubdir)/,$(posts-src:.jp.rst=.rst))
-posts-y := $(addsuffix .stamp,$(posts-y:.rst=.html))
+
+posts-i := $(posts-src:.jp.rst=.rst)
+posts-i := $(posts-i:.rst=.html)
+posts-i += $(patsubst %.html,%.text,$(filter %.html,$(posts-i)))
+posts-i += $(patsubst %.html,%.block,$(filter %.html,$(posts-i)))
+
+posts-o := $(addprefix $(objtree)/,$(posts-i))
+posts-y := $(addsuffix .stamp,$(addprefix $(pubdir)/,$(posts-i)))
 
 post_index := $(postdir)/searchindex.json
 post_header := $(post_m4dir)/post_header.m4
@@ -52,12 +58,20 @@ $(post_index): $(posts-m4) $(post_master)
 	mkdir -p $(pubdir)/math
 	cp $(postdir)/_images/math/* $(pubdir)/math
 
-posts/%.html1: $(post_index)
-	jq -r .body $(postdir)/$*.*fjson >$@
+$(posts-o): $(post_index)
 
-posts/%.html: posts/%.html1
-	sed 's,src="\(\.\./\)\+_images/\(math/.\+\)\.svg",src="/\2.svg",g' \
-	    $< >$@
+$(postdir)/%.html:
+	jq -r .body $(postdir)/$*.*fjson | \
+	sed 's,src="\(\.\./\)\+_images/\(math/.\+\)\.svg",src="/\2.svg",g' >$@
+
+posts/%.html: $(postdir)/%.html
+	cp $< $@
+
+posts/%.text: $(postdir)/%.text
+	cp $< $@
+
+posts/%.block: $(postdir)/%.block
+	cp $< $@
 
 $(posts_asmap_sed):
 	mkdir -p $(@D)

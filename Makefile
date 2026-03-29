@@ -120,3 +120,8 @@ host:
 deploy:
 	$(wrangler) deploy
 	$(wrangler) secret bulk .dev.vars
+
+.PHONY: hot-build-post
+
+hot-build-post: $(post_index)
+	$(onchange) $(patsubst %,'%',$(onchange-src)) -- $(MAKE) $(post_index)

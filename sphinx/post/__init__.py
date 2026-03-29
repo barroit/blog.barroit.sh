@@ -4,6 +4,7 @@
 from .builder import post_builder
 from .directive import tag_init_map, tag_get_map, tag_directive
 from .lang import mixed_lang
+from .doctree import dump_plaintext
 
 def purge_doc(app, env, doc):
 	map = tag_get_map(env)
@@ -32,6 +33,7 @@ def setup(app):
 
 	app.connect('env-purge-doc', purge_doc)
 	app.connect('env-merge-info', merge_info)
+	app.connect('doctree-resolved', dump_plaintext)
 
 	return {
 		'parallel_read_safe': 1,

@@ -26,7 +26,10 @@ trap 'rm -f .tmp-$$' EXIT
 while read src; do
 	>.tmp-$$
 
-	uri=$(printf $src | cut -d. -f1 | tr [:lower:]/- [:upper:]__)_HTML
+	name=$(printf $src | cut -d. -f1 | tr [:lower:]/- [:upper:]__)
+	html=${name}_HTML
+	text=${name}_TEXT
+	block=${name}_BLOCK
 	path=$(printf $src | sed $1)
 
 	class=$(printf $path | cut -d/ -f1)
@@ -57,7 +60,9 @@ while read src; do
 
 	cat <<-EOF | jq -c
 	{
-		"uri": "$uri",
+		"html": "$html",
+		"text": "$text",
+		"block": "$block",
 		"class": "$class",
 		"slug": "$slug",
 		"title": "$title",

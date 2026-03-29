@@ -139,8 +139,8 @@ export default function Post()
 			return
 		}
 
-		fetch(post_meta.uri).then(res => res.text())
-				    .then(sanitize_post).then(set_post)
+		fetch(post_meta.html).then(res => res.text())
+				     .then(sanitize_post).then(set_post)
 	}, [ meta_loading ])
 
 RETURN_JSX_BEGIN post == -1 ? (
