@@ -7,7 +7,7 @@ import { useRoute, useLocation } from 'preact-iso'
 import { useContext, useEffect, useRef, useState } from 'preact/hooks'
 
 import { PostListContext, PostMapContext } from '../index.jsx'
-import Button from '../lib/button.jsx'
+import { GobackButton } from '../lib/button.jsx'
 import Dialog from '../lib/dialog.jsx'
 import { CenteredLoading, NotFoundDialog } from '../lib/ux.jsx'
 import Header from './header.jsx'
@@ -100,17 +100,12 @@ function Content({ post })
 
 RETURN_JSX_BEGIN
 <div ref={ box } id='post'
-     class='mx-auto max-w-[60ch] font-post tracking-wide'>
+     class='mx-auto my-15 max-w-[60ch] font-post tracking-wide'>
   <Dialog class='p-10 w-full h-[100dvh]' onclose={ reset_img }>
     <img class='m-auto max-h-full'/>
   </Dialog>
 </div>
 RETURN_JSX_END
-}
-
-function go_back()
-{
-	navigation.navigate('/')
 }
 
 export default function Post()
@@ -149,7 +144,7 @@ RETURN_JSX_BEGIN post == -1 ? (
 <main class='relative'>
   <CenteredLoading { ...{ loading } }/>
   <Header>
-    <Button onclick={ go_back }>return</Button>
+    <GobackButton/>
   </Header>
 { post ? (
   <Content { ...{ post } }/>

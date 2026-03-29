@@ -3,7 +3,7 @@
  * Copyright 2026 Jiamu Sun <39@barroit.sh>
  */
 
-import Button from '../lib/button.jsx'
+import { Button } from '../lib/button.jsx'
 
 function onclick()
 {

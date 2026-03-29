@@ -38,7 +38,7 @@ RETURN_JSX_BEGIN
 RETURN_JSX_END
 }
 
-function go_back()
+function goback()
 {
 	let path = '/'
 
@@ -58,14 +58,14 @@ export function NotFoundDialog({ part, content })
 
 RETURN_JSX_BEGIN
 <div class='absolute inset-0 w-screen h-screen flex bg-white'>
-  <button onclick={ go_back }
+  <button onclick={ goback }
           class='m-auto p-3 w-75 rounded-lg shadow-sm
                  transition HOT(bg-slate-100) ACTIVE(scale-90) space-y-5'>
     <div class='max-w-75 flex justify-center gap-x-5'>
       <img class='h-16' src='IMAGES_AMALA_FROWN_PNG'/>
-      <div class='mt-1 min-w-0 space-y-2'>
+      <div class='mt-1 min-w-0 text-left space-y-2'>
         <p class='text-xl'>Unknown { part }</p>
-        <p class='px-1 block text-sm text-zinc-700 wrap-break-word'>
+        <p class='px-1 text-sm text-zinc-700 wrap-break-word'>
           { content }
         </p>
       </div>
