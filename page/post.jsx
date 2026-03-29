@@ -8,6 +8,7 @@ import { useContext, useEffect, useRef, useState } from 'preact/hooks'
 
 import { PostListContext, PostMapContext } from '../index.jsx'
 import Button from '../lib/button.jsx'
+import Dialog from '../lib/dialog.jsx'
 import { CenteredLoading, NotFoundDialog } from '../lib/ux.jsx'
 import Header from './header.jsx'
 
@@ -48,15 +49,8 @@ function preview_media(dialog, event)
 	dialog.showModal()
 }
 
-function on_dialog_click(event)
+function reset_img(event)
 {
-	T(event).close()
-}
-
-function on_dialog_close(event)
-{
-	delete document.documentElement.dataset.noscroll
-
 	FIRST_CHILD(T(event)).removeAttribute('src')
 }
 
@@ -107,10 +101,9 @@ function Content({ post })
 RETURN_JSX_BEGIN
 <div ref={ box } id='post'
      class='mx-auto max-w-[60ch] font-post tracking-wide'>
-  <dialog class='inset-0 p-10 w-full h-[100dvh] open:flex'
-          onclick={ on_dialog_click } onclose={ on_dialog_close }>
+  <Dialog class='p-10 w-full h-[100dvh]' onclose={ reset_img }>
     <img class='m-auto max-h-full'/>
-  </dialog>
+  </Dialog>
 </div>
 RETURN_JSX_END
 }
