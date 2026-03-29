@@ -8,7 +8,7 @@ function __onclose(other, event)
 	let use_default = 1
 
 	if (other)
-		use_default = other(event)
+		use_default = other(event) ?? 1
 
 	if (use_default)
 		delete DOC_NODE.dataset.noscroll
@@ -19,7 +19,7 @@ function __onclick(other, event)
 	let use_default = 1
 
 	if (other)
-		use_default = other(event)
+		use_default = other(event) ?? 1
 
 	if (use_default)
 		T(event).close()
