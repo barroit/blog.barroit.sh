@@ -5,6 +5,7 @@ from docutils import nodes
 import json
 import os
 from os.path import dirname
+from sphinx import addnodes
 
 EMITS = (
 	nodes.paragraph,
@@ -15,6 +16,8 @@ EMITS = (
 	nodes.literal_block,
 	nodes.line,
 	nodes.entry,
+	addnodes.desc_signature,
+	addnodes.desc_signature_line,
 )
 
 SKIPS = (
@@ -28,6 +31,8 @@ ANCHORS = (
 	nodes.target,
 	nodes.title,
 	nodes.rubric,
+	addnodes.desc_signature,
+	addnodes.desc_signature_line,
 )
 
 def dump_plaintext(app, doctree, docname):
