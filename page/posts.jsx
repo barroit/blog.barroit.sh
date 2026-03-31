@@ -6,7 +6,6 @@
 import { useContext } from 'preact/hooks'
 
 import { PostListContext } from '../index.jsx'
-import useMobile from '../lib/device.js'
 import { CenteredLoading } from '../lib/ux.jsx'
 import Header from './header.jsx'
 
@@ -24,8 +23,6 @@ RETURN_JSX_END
 
 function Post({ post })
 {
-	const mobile = useMobile()
-
 	const href = `/post/${post.class}/${post.slug}`
 	const date = new Date(post.modify)
 	const cate = post.tag.find(tag => tag.class)
@@ -55,21 +52,19 @@ function Post({ post })
 
 RETURN_JSX_BEGIN
 <li class='w-fit flex gap-x-9'>
-{ !mobile ? (
   <div class='relative hidden md:block'>
     <p>{ mon } { day }</p>
     <p class='text-right text-sm text-zinc-500'>{ yr }</p>
     <div class='absolute left-2/3 bottom-5 w-[2px] h-7
                 select-none bg-zinc-300'/>
   </div>
-) : undefined }
   <a { ...{ href } } class='group pb-4 pr-4 *:not-first:ml-1'>
     <div class='relative'>
       <div class='absolute bottom-0 border-b-2 border-zinc-300'>
         <div class='text-lg invisible'>{ placeholder }</div>
       </div>
-      <h2 class='text-lg origin-left transition-transform group-hover:scale-105
-                 group-hover:-translate-y-1 group-hover:translate-x-1'>
+      <h2 class='text-lg origin-left transition-transform GROUP_HOT(scale-105)
+                 GROUP_HOT(-translate-y-1) GROUP_HOT(translate-x-1)'>
         { post.title }
       </h2>
     </div>
@@ -77,14 +72,12 @@ RETURN_JSX_BEGIN
       <Field icon='IMAGES_GOOGLE_FOLDER_SVG'>
         <p>{ cate.master }</p>
       </Field>
-    { !mobile ? (
-      <Field icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG'>
+      <Field icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG' class='hidden md:block'>
         <div>
           <span>{ weekday } { time } </span>
           <span class='text-zinc-500'>+{ timezone }</span>
         </div>
       </Field>
-    ) : undefined }
     </div>
     <Field class='mt-3' icon='IMAGES_GOOGLE_SELL_SVG'>
       <div>
@@ -96,14 +89,12 @@ RETURN_JSX_BEGIN
       )) }
       </div>
     </Field>
-  { mobile ? (
-    <Field class='mt-3' icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG'>
+    <Field class='mt-3 md:hidden' icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG'>
       <div>
         <span>{ weekday } { time } </span>
         <span class='text-zinc-500'>+{ timezone }</span>
       </div>
     </Field>
-  ) : undefined }
   </a>
 </li>
 RETURN_JSX_END
