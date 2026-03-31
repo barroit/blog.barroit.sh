@@ -41,11 +41,20 @@ Supported filters are:
 ``-tag <value>``
     Match tags against ``<value>``.
 
-``-during <start>-<end>``
+``-during <range>``
     Match results whose date is within given range.
 
-    Date format is flexible, as long as both sides of ``-`` are accepted
-    by ``new Date()``.
+    ``<range>`` uses a single-character separator. Text between first and second
+    separator is start date. Text between second and third separator is end
+    date.
+
+    For example::
+
+        -during /2026-03-09/2026-08-31/
+        -during |3/9/2026|8/31/2026|
+
+    Use a separator that doesn't appear in either date string. Both dates must
+    be accepted by ``new Date()``.
 
 Operators
 =========
@@ -85,8 +94,8 @@ Operand parsing
 
 Filter values are parsed greedily.
 
-After a filter starts, following words belong to that filter value until
-next operator, next filter, or parenthesis appears.
+After a filter starts, following words belong to that filter value until next
+operator, next filter, or parenthesis appears.
 
 For example::
 
@@ -107,8 +116,8 @@ Query is evaluated like this:
 3. parse remaining input as filter expression
 4. apply filter expression to candidate set
 
-A query that starts with a filter skips full-text search and applies that
-filter to all documents.
+A query that starts with a filter skips full-text search and applies that filter
+to all documents.
 
 Examples
 ========
