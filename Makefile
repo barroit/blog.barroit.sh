@@ -120,9 +120,12 @@ hot-dev: deploy-ready
 host:
 	$(wrangler) dev --ip=$$($(lan-ip)) --port=3939
 
-deploy:
+$(pubdir)/.assetsignore:
+	mkdir -p $(@D)
+	printf '%s\n' '*.stamp' >$@
+
+deploy: deploy-ready $(pubdir)/.assetsignore
 	$(wrangler) deploy
-	$(wrangler) secret bulk .dev.vars
 
 .PHONY: hot-build-post
 
