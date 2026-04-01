@@ -149,3 +149,51 @@ Full-text search, then combined filters::
 Grouped filter expression::
 
     random query -title release note ( -tag blog -or -tag note )
+
+Syntax
+======
+
+Feel free to paste this to AI::
+
+	\s+		;
+
+	\-or\b		return 'OR'
+	\-not\b		return 'NOT'
+
+	\-[a-zA-Z0-9_]+	return 'FILTER_TYPE'
+
+	"("		return '('
+	")"		return ')'
+
+	[^\s\(\)]+	return 'WORD'
+
+	<<EOF>>		return 'EOF'
+
+	%%
+
+	query
+	:	words EOF
+	|	filter EOF
+	|	words filter EOF
+	;
+
+	filter
+	:	filter_term
+	|	filter filter_term
+	|	filter OR filter_term
+	;
+
+	filter_term
+	:	filter_item
+	|	NOT filter_item
+	;
+
+	filter_item
+	:	FILTER_TYPE words
+	|	'(' filter ')'
+	;
+
+	words
+	:	WORD
+	|	words WORD
+	;
