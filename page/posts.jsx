@@ -8,6 +8,7 @@ import { useContext } from 'preact/hooks'
 import { PostListContext } from '../index.jsx'
 import { CenteredLoading } from '../lib/ux.jsx'
 import Header from './header.jsx'
+import Credit from './credit.jsx'
 
 function Field({ children, icon, ...props })
 {
@@ -56,7 +57,7 @@ RETURN_JSX_BEGIN
     <p>{ mon } { day }</p>
     <p class='text-right text-sm text-zinc-500'>{ yr }</p>
     <div class='absolute left-2/3 bottom-5 w-[2px] h-7
-                select-none bg-zinc-300'/>
+                select-none bg-zinc-300'></div>
   </div>
   <a { ...{ href } } class='group pb-4 pr-4 *:not-first:ml-1'>
     <div class='relative'>
@@ -115,6 +116,7 @@ RETURN_JSX_BEGIN
     <Post { ...{ post } } />
   )) : undefined }
   </ul>
+  <Credit/>
 </main>
 RETURN_JSX_END
 }

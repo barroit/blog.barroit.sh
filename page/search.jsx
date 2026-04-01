@@ -9,7 +9,7 @@ import { PostListContext, PostMapContext } from '../index.jsx'
 import { Button, GobackButton } from '../lib/button.jsx'
 import debounce from '../lib/debounce.js'
 import Dialog from '../lib/dialog.jsx'
-import { CenteredLoading, NotFoundDialog } from '../lib/ux.jsx'
+import { CenteredLoading } from '../lib/ux.jsx'
 import Header from './header.jsx'
 
 import {
@@ -350,15 +350,6 @@ function Panel({ word_index, post_list, post_map })
 
 		C(ctx).set_data = set_data
 	}
-
-	useEffect(() =>
-	{
-		const input = document.getElementById('search-input')
-
-		input.value = '-tag miku -or -title 初音ミク -not -tag concert'
-		input.value = '-during ,3/9/2026,8/31/2026,'
-		input.dispatchEvent(new Event('input', { bubbles: true }))
-	}, [])
 
 	const error = data && data[2]
 	const matches = data && data[1]
