@@ -8,6 +8,7 @@ page-m4 := $(addprefix $(m4dir)/,$(page-src))
 clean += $(page-m4)
 
 $(m4dir)/page/search_parser.js: parser/search.y parser/search.l
+	mkdir -p $(@D)
 	$(jison) -o $@1 $^
 	sed s/substr/[[substr]]/g $@1 >$@
 

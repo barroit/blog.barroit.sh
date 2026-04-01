@@ -12,35 +12,126 @@ import Dialog from '../lib/dialog.jsx'
 import { CenteredLoading, NotFoundDialog } from '../lib/ux.jsx'
 import Header from './header.jsx'
 
-import __search, { res_to_str } from '../lib/sphinx/search.js'
+import {
+	res_to_str,
+	search_eval_indexes,
+	search_eval_objects,
+	search_eval_terms,
+	search_eval_titles,
+	search_init,
+	search_reset,
+	search_split,
+	search_stem,
+	search_yield,
+} from '../lib/search.js'
 
 const word_index_uri = document.body.dataset['wordIndex']
+
+const search_parse = search_parser.parse.bind(search_parser)
+
+function filter_title(search_ctx, items, title)
+{
+	const words = search_split(title)
+	const stems = search_stem(words)
+
+	search_eval_titles(search_ctx, title, stems)
+
+	const ___results = search_yield(search_ctx)
+	const __results = ___results.map(res => res[3])
+	const results = new Set(__results)
+	const out = new Set()
+
+	for (const item of items) {
+		if (results.has(item[3]))
+			out.add(item)
+	}
+
+	search_reset(search_ctx)
+	return out
+}
+
+function eval_filter(search_ctx, node, items)
+{
+	console.log(node)
+	let left
+	let right
+
+	switch (node[0]) {
+	case 'or':
+		left = eval_filter(search_ctx, node[1], items)
+		right = eval_filter(search_ctx, node[2], items)
+
+		return left.union(right)
+	case 'and':
+		left = eval_filter(search_ctx, node[1], items)
+		right = eval_filter(search_ctx, node[2], items)
+
+		return left.intersection(right)
+	case 'not':
+		left = items
+		right = eval_filter(search_ctx, node[1], items)
+
+		return left.difference(right)
+	case 'tag':
+		return new Set()
+	case 'title':
+		return filter_title(search_ctx, items, node[1])
+	}
+
+	return new Set()
+}
+
+function search_input(ctx, input, word_index)
+{
+	const [ fuzzy, filter ] = search_parse(input)
+	const search_ctx = search_init(word_index)
+
+	if (fuzzy) {
+		const words = search_split(fuzzy)
+		const stems = search_stem(words)
+
+		ctx.query = stems
+
+		search_eval_titles(search_ctx, fuzzy, stems)
+		search_eval_indexes(search_ctx, fuzzy)
+		search_eval_objects(search_ctx, words)
+		search_eval_terms(search_ctx, stems)
+	} else {
+		search_ctx.res = ctx.post_list.map(post => ([
+			`${post.class}/${post.slug}`,
+			undefined,
+			undefined,
+			post.title,
+			'',
+			undefined,
+		]))
+		ctx.query = [ '' ]
+	}
+
+	const __results = search_yield(search_ctx)
+	const results = new Set(__results)
+	let filtered = results
+
+	if (filter) {
+		search_reset(search_ctx)
+		filtered = eval_filter(search_ctx, filter, results)
+	}
+
+	return [ ...filtered ]
+}
 
 function search(ctx, word_index, event)
 {
 	const input = event.target.value
-	let query
+	let data
 
-	if (input)
-		query = __search(input, word_index)
+	if (input) {
+		data = []
+		data[0] = input
+		data[1] = search_input(ctx, input, word_index)
+	}
 
-	ctx.set_query(query)
-}
-
-function show_tip_dialog(event)
-{
-	DOC_NODE.dataset.noscroll = ''
-	NEXT_SIBLING(T(event)).showModal()
-}
-
-function hide_tip_dialog(event)
-{
-	!PARENT(PARENT(T(event))).close()
-}
-
-function can_hide_tip_dialog(event)
-{
-	return !FIRST_CHILD(T(event)).contains(_T(event))
+	ctx.set_data(data)
 }
 
 function resolve_anchor_summary(anchor, text, text_meta)
@@ -50,14 +141,14 @@ function resolve_anchor_summary(anchor, text, text_meta)
 	return text.slice(off, off + len)
 }
 
-function resolve_summary(include, anchor, [ text, text_meta ])
+function resolve_summary(query, anchor, [ text, text_meta ])
 {
 	if (text_meta)
 		return resolve_anchor_summary(anchor, text, text_meta)
 
 	const __text = text.toLowerCase()
-	const __base = [ ...include ].map(term => __text.indexOf(term))
-				     .filter(i => i > -1)
+	const __base = query.map(term => __text.indexOf(term))
+			    .filter(i => i > -1)
 	const base = __base[__base.length - 1]
 
 	let begin = base
@@ -69,16 +160,13 @@ function resolve_summary(include, anchor, [ text, text_meta ])
 	return text.slice(begin, end)
 }
 
-function Result({ include, match })
+function Result({ ctx, match })
 {
 	/*
 	 * lib/sphinx/search.js:89
 	 */
 	const [ docname, type, _, title, anchor, __summary ] = match
 	const uri = `/post/${docname}${anchor}`
-
-	const [ post_list ] = useContext(PostListContext)
-	const post_map = useContext(PostMapContext)
 	let [ summary, set_summary ] = useState(__summary)
 
 	useEffect(() =>
@@ -86,11 +174,11 @@ function Result({ include, match })
 		if (summary)
 			return
 
-		const pos = post_map[docname]
-		const meta = post_list[pos]
+		const pos = C(ctx).post_map[docname]
+		const meta = C(ctx).post_list[pos]
 
 		const resolve_summary_fn = BIND(resolve_summary,
-						include, anchor.slice(1))
+						C(ctx).query, anchor.slice(1))
 		const tasks = []
 
 		tasks.push(fetch(meta.text).then(res => res.text()))
@@ -105,12 +193,17 @@ function Result({ include, match })
 		summary = summary.slice(0, 180) + '...'
 
 RETURN_JSX_BEGIN summary ? (
-<a href={ uri } class='block max-w-fit'>
+<a href={ uri } class='group p-2 max-w-fit block'>
   <div class='flex gap-2 items-baseline'>
-    <span class='truncate min-w-0'>{ title }</span>
+    <span class='truncate min-w-0 transition origin-right
+                 GROUP_HOT(scale-105) GROUP_HOT(-translate-1)'>
+      { title }
+    </span>
+  { type ? (
     <span class='text-xs text-zinc-500'>({ type })</span>
+  ) : undefined }
   </div>
-  <p class='mt-2 ml-[4ch] text-sm'>{ summary }</p>
+  <p class='mt-2 ml-[4ch] text-sm text-zinc-600'>{ summary }</p>
 </a>
 ) : (
 <div>
@@ -120,19 +213,6 @@ RETURN_JSX_BEGIN summary ? (
   </div>
 </div>
 ) RETURN_JSX_END
-}
-
-function Results({ query: [ include, matches ] })
-{
-	const fmt_key = (res) => res_to_str(res) + `,${String(res[5])}`
-
-RETURN_JSX_BEGIN
-<div class='w-full px-4 space-y-8'>
-{ matches.map(match => (
-  <Result key={ fmt_key(match) } { ...{ include, match } }/>
-)) }
-</div>
-RETURN_JSX_END
 }
 
 function Input({ ctx })
@@ -169,71 +249,59 @@ RETURN_JSX_BEGIN
 RETURN_JSX_END
 }
 
-function Panel({ word_index })
+function Panel({ word_index, post_list, post_map })
 {
-	const ctx = useRef({})
-	const [ query, set_query ] = useState()
+	const ctx = useRef()
+	const [ data, set_data ] = useState()
+	const fmt_key = (res) => res_to_str(res) + `,${String(res[5])}`
+
+	if (!C(ctx)) {
+		C(ctx) = {}
+
+		C(ctx).post_list = post_list
+		C(ctx).post_map = post_map
+
+		C(ctx).__search = BIND(search, C(ctx), word_index)
+		C(ctx).search = debounce(C(ctx).__search, 239)
+
+		C(ctx).set_data = set_data
+	}
 
 	useEffect(() =>
 	{
-		if (word_index) {
-			C(ctx).__search = BIND(search, C(ctx), word_index)
-			C(ctx).search = debounce(C(ctx).__search, 239)
-			C(ctx).set_query = set_query
-		}
-	}, [ word_index ])
+		const input = document.getElementById('search-input')
+
+		input.value = '-tag miku -or -title 初音ミク -not -tag concert'
+		input.value = '-title 初音ミク -title voltage'
+		input.dispatchEvent(new Event('input', { bubbles: true }))
+	}, [])
 
 RETURN_JSX_BEGIN
 <div class='mx-auto max-w-[60ch] flex flex-col items-center'>
   <Input { ...{ ctx } }/>
-{ query ? (
+{ data ? (
   <div class='mt-2 w-full space-y-5'>
     <p class='pr-2 text-right text-sm text-zinc-700'>
-      <span class='font-bold'>{ query[1].length } </span>
-      <span>match{ query[1].length < 2 ? '' : 'es' }</span>
+      <span class='font-bold'>{ data[1].length } </span>
+      <span>match{ data[1].length < 2 ? '' : 'es' }</span>
     </p>
-    <Results { ...{ query } }/>
+    <div class='w-full px-4 space-y-6'>
+    { data[1].map(match => (
+      <Result key={ fmt_key(match) } { ...{ ctx, match } }/>
+    )) }
+    </div>
   </div>
 ) : undefined }
 </div>
 RETURN_JSX_END
 }
 
-function Syntax()
+function goto_manual()
 {
-	const tips = [
-		[ 'word', 'include this word' ],
-		[ '-word', 'exclude this word' ],
-		[ 'title:', 'search title terms', 'Document' ],
-		[ 'tag:', 'search tag terms', 'miku' ],
-		[ 'during:', 'search within a date range', '3/9/26-8/31/26' ],
-	]
+	const domain = 'https://docs.barroit.sh'
+	const page = `${domain}/blog.barroit.sh/section/querying.html`
 
-RETURN_JSX_BEGIN
-<>
-  <Button onclick={ show_tip_dialog }>syntax</Button>
-  <Dialog onclick={ can_hide_tip_dialog } class='size-full bg-transparent'>
-    <div class='relative m-auto p-8 max-w-90 rounded-lg bg-gray-100'>
-      <dl>
-      { tips.map(([ feat, desc, hint ]) => (
-        <>
-          <dt class='not-first:mt-6'>
-            <span class='font-bold'>{ feat }</span>
-            <span class='text-gray-400'>{ hint }</span>
-          </dt>
-          <dd class='ml-[4ch] mt-2 text-gray-600'>{ desc }</dd>
-        </>
-      )) }
-      </dl>
-      <p class='mx-auto mt-5 max-w-[30ch] text-sm font-bold text-zinc-800'>
-        Filters are evaluated left to right. Order matters, like in find(1).
-      </p>
-      <Button onclick={ hide_tip_dialog }
-              class='absolute top-3 right-3 text-zinc-600'>close</Button>
-    </div>
-  </Dialog>
-</>
-RETURN_JSX_END
+	window.open(page, '_blank')
 }
 
 export default function Search()
@@ -254,9 +322,11 @@ RETURN_JSX_BEGIN
   <CenteredLoading { ...{ loading } }/>
   <Header nosearch>
     <GobackButton/>
-    <Syntax/>
+    <Button onclick={ goto_manual }>manual</Button>
   </Header>
-  <Panel { ...{ word_index } }/>
+{ post_list && !loading ? (
+  <Panel { ...{ word_index, post_list, post_map } }/>
+) : undefined }
 </main>
 RETURN_JSX_END
 }
