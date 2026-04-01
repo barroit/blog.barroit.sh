@@ -3,12 +3,7 @@
  * Copyright 2026 Jiamu Sun <39@barroit.sh>
  */
 
-import { Button } from '../lib/button.jsx'
-
-function onclick()
-{
-	navigation.navigate('/search')
-}
+import Flick from '../lib/flick.jsx'
 
 export default function Header({ children, nosearch, ...props })
 {
@@ -18,7 +13,11 @@ RETURN_JSX_BEGIN
 <header { ...props }>
   { children }
 { !nosearch ? (
-  <Button { ...{ onclick } }>search</Button>
+  <a href='/search'
+     class='p-1 transition-colors underline decoration-transparent
+            HOT(decoration-black)'>
+    <Flick>search</Flick>
+  </a>
 ) : undefined }
 </header>
 RETURN_JSX_END
