@@ -64,6 +64,8 @@ class tag_directive(SphinxDirective):
 			aliases = json.loads(res['aliases'])
 
 			tags.append(res['id'])
-			tags.extend(aliases)
+
+			if aliases[0]:
+				tags.extend(aliases)
 
 		return []
