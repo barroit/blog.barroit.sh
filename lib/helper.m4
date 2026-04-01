@@ -16,6 +16,7 @@ define(NORMALIZE, $1.toLowerCase().trim())
 define(ESCAPE, [[$1.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&')]])
 
 define(IS_ARR, Array.isArray($1))
+define(IS_NAN, Number.isNaN($1))
 
 define(MAX, Math.max($1))
 define(MIN, Math.min($1))

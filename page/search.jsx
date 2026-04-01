@@ -72,31 +72,37 @@ function filter_titles(search_ctx, items, title)
 	return out
 }
 
-function eval_filter(search_ctx, node, items)
+function eval_filter(ctx, search_ctx, node, items)
 {
 	let left
 	let right
 
 	let words
 	let stems
-
 	let filtered
 	const results = new Set()
 
+	let sep
+	let dates
+	let __begin
+	let __end
+	let begin
+	let end
+
 	switch (node[0]) {
 	case 'or':
-		left = eval_filter(search_ctx, node[1], items)
-		right = eval_filter(search_ctx, node[2], items)
+		left = eval_filter(ctx, search_ctx, node[1], items)
+		right = eval_filter(ctx, search_ctx, node[2], items)
 
 		return left.union(right)
 	case 'and':
-		left = eval_filter(search_ctx, node[1], items)
-		right = eval_filter(search_ctx, node[2], items)
+		left = eval_filter(ctx, search_ctx, node[1], items)
+		right = eval_filter(ctx, search_ctx, node[2], items)
 
 		return left.intersection(right)
 	case 'not':
 		left = items
-		right = eval_filter(search_ctx, node[1], items)
+		right = eval_filter(ctx, search_ctx, node[1], items)
 
 		return left.difference(right)
 	case 'tag':
@@ -111,19 +117,46 @@ function eval_filter(search_ctx, node, items)
 
 		filtered = search_yield(search_ctx)
 		filtered = filtered.map(res => res[3])
-		filtered = new Set(filtered)
 
-		for (const item of items) {
-			if (filtered.has(item[3]))
-				results.add(item)
-		}
+		break
+	case 'during':
+		sep = node[1][0]
+		dates = node[1].split(sep)
 
-		search_reset(search_ctx)
-		return results
+		if (dates.length != 4 || dates[0].length || dates[3].length)
+			throw new Error(`broken range: ${node[1]}`)
+
+		begin = Date.parse(dates[1])
+		end = Date.parse(dates[2])
+
+		if (IS_NAN(begin))
+			throw new Error(`broken date: "${dates[1]}"`)
+
+		if (IS_NAN(end))
+			throw new Error(`broken date: "${dates[2]}"`)
+
+		filtered = ctx.post_list.filter(({ modify }) =>
+		{
+			const date = Date.parse(modify)
+
+			return begin <= date && date <= end
+		})
+		filtered = filtered.map(({ title }) => title)
+
+		break
 	default:
 		throw new Error(`unknown filter: ${node[0]}`)
 	}
 
+	filtered = new Set(filtered)
+
+	for (const item of items) {
+		if (filtered.has(item[3]))
+			results.add(item)
+	}
+
+	search_reset(search_ctx)
+	return results
 }
 
 function search_input(ctx, input, word_index)
@@ -160,7 +193,7 @@ function search_input(ctx, input, word_index)
 
 	if (filter) {
 		search_reset(search_ctx)
-		filtered = eval_filter(search_ctx, filter, results)
+		filtered = eval_filter(ctx, search_ctx, filter, results)
 	}
 
 	return [ ...filtered ]
@@ -323,7 +356,7 @@ function Panel({ word_index, post_list, post_map })
 		const input = document.getElementById('search-input')
 
 		input.value = '-tag miku -or -title 初音ミク -not -tag concert'
-		input.value = '-tags s'
+		input.value = '-during ,3/9/2026,8/31/2026,'
 		input.dispatchEvent(new Event('input', { bubbles: true }))
 	}, [])
 

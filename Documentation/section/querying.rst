@@ -54,7 +54,7 @@ Supported filters are:
         -during |3/9/2026|8/31/2026|
 
     Use a separator that doesn't appear in either date string. Both dates must
-    be accepted by ``new Date()``.
+    be accepted by ``Date.parse()``. The post dates are in JST.
 
 Operators
 =========
