@@ -90,5 +90,5 @@ class tag_index(IndexBuilder):
 		data = IndexBuilder.freeze(self)
 		index = gen_tag_index(self.tag_map, self._titles, self.lang)
 
-		data['tag'] = freeze_tag_index(index)
+		data['tags'] = freeze_tag_index(index)
 		return data

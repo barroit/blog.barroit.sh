@@ -16,6 +16,7 @@ import {
 	res_to_str,
 	search_eval_indexes,
 	search_eval_objects,
+	search_eval_tags,
 	search_eval_terms,
 	search_eval_titles,
 	search_init,
@@ -29,7 +30,28 @@ const word_index_uri = document.body.dataset['wordIndex']
 
 const search_parse = search_parser.parse.bind(search_parser)
 
-function filter_title(search_ctx, items, title)
+function filter_tags(search_ctx, items, tag)
+{
+	const words = search_split(tag)
+	const stems = search_stem(words)
+
+	search_eval_tags(search_ctx, stems)
+
+	const ___results = search_yield(search_ctx)
+	const __results = ___results.map(res => res[3])
+	const results = new Set(__results)
+	const out = new Set()
+
+	for (const item of items) {
+		if (results.has(item[3]))
+			out.add(item)
+	}
+
+	search_reset(search_ctx)
+	return out
+}
+
+function filter_titles(search_ctx, items, title)
 {
 	const words = search_split(title)
 	const stems = search_stem(words)
@@ -52,9 +74,14 @@ function filter_title(search_ctx, items, title)
 
 function eval_filter(search_ctx, node, items)
 {
-	console.log(node)
 	let left
 	let right
+
+	let words
+	let stems
+
+	let filtered
+	const results = new Set()
 
 	switch (node[0]) {
 	case 'or':
@@ -73,12 +100,30 @@ function eval_filter(search_ctx, node, items)
 
 		return left.difference(right)
 	case 'tag':
-		return new Set()
 	case 'title':
-		return filter_title(search_ctx, items, node[1])
+		words = search_split(node[1])
+		stems = search_stem(words)
+
+		if (node[0] == 'tag')
+			search_eval_tags(search_ctx, stems)
+		else
+			search_eval_titles(search_ctx, node[1], stems)
+
+		filtered = search_yield(search_ctx)
+		filtered = filtered.map(res => res[3])
+		filtered = new Set(filtered)
+
+		for (const item of items) {
+			if (filtered.has(item[3]))
+				results.add(item)
+		}
+
+		search_reset(search_ctx)
+		return results
+	default:
+		throw new Error(`unknown filter: ${node[0]}`)
 	}
 
-	return new Set()
 }
 
 function search_input(ctx, input, word_index)
@@ -92,6 +137,7 @@ function search_input(ctx, input, word_index)
 
 		ctx.query = stems
 
+		search_eval_tags(search_ctx, stems)
 		search_eval_titles(search_ctx, fuzzy, stems)
 		search_eval_indexes(search_ctx, fuzzy)
 		search_eval_objects(search_ctx, words)
@@ -126,9 +172,14 @@ function search(ctx, word_index, event)
 	let data
 
 	if (input) {
-		data = []
+		data = [ undefined, undefined, undefined ]
 		data[0] = input
-		data[1] = search_input(ctx, input, word_index)
+
+		try {
+			data[1] = search_input(ctx, input, word_index)
+		} catch ({ name, message }) {
+			data[2] = message
+		}
 	}
 
 	ctx.set_data(data)
@@ -215,7 +266,7 @@ RETURN_JSX_BEGIN summary ? (
 ) RETURN_JSX_END
 }
 
-function Input({ ctx })
+function Input({ ctx, error })
 {
 	const oninput = (event) =>
 	{
@@ -234,10 +285,10 @@ function Input({ ctx })
 
 RETURN_JSX_BEGIN
 <div class='mt-5 w-full flex items-center gap-x-4'>
-  <label for='search-input'
+  <label for='search-input' data-error={ error }
          class='group flex-1 p-3 flex rounded-md outline-2
                 transition bg-gray-100 shadow-sm outline-transparent
-                FOCUS_WITHIN(outline-luka-pink)'>
+                FOCUS_WITHIN(outline-luka-pink) data-error:outline-red-500'>
     <div class='size-6 bg-black mask-cover transition pointer-events-none
                 mask-[url(IMAGES_GOOGLE_SEARCH_SVG)]
                 GROUP_FOCUS_WITHIN(bg-miku-pink)'></div>
@@ -272,23 +323,32 @@ function Panel({ word_index, post_list, post_map })
 		const input = document.getElementById('search-input')
 
 		input.value = '-tag miku -or -title 初音ミク -not -tag concert'
-		input.value = '-title 初音ミク -title voltage'
+		input.value = '-tags s'
 		input.dispatchEvent(new Event('input', { bubbles: true }))
 	}, [])
 
+	const error = data && data[2]
+	const matches = data && data[1]
+
 RETURN_JSX_BEGIN
 <div class='mx-auto max-w-[60ch] flex flex-col items-center'>
-  <Input { ...{ ctx } }/>
+  <Input { ...{ ctx, error } }/>
 { data ? (
   <div class='mt-2 w-full space-y-5'>
-    <p class='pr-2 text-right text-sm text-zinc-700'>
-      <span class='font-bold'>{ data[1].length } </span>
-      <span>match{ data[1].length < 2 ? '' : 'es' }</span>
-    </p>
+    <div class='px-2 flex justify-end text-sm text-zinc-700'>
+    { !error ? (
+      <div>
+        <span class='font-bold'>{ data[1].length } </span>
+        <span>match{ data[1].length < 2 ? '' : 'es' }</span>
+      </div>
+    ) : (
+      <p>{ error }</p>
+    ) }
+    </div>
     <div class='w-full px-4 space-y-6'>
-    { data[1].map(match => (
+    { !error ? matches.map(match => (
       <Result key={ fmt_key(match) } { ...{ ctx, match } }/>
-    )) }
+    )) : undefined }
     </div>
   </div>
 ) : undefined }
