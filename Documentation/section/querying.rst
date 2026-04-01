@@ -35,10 +35,10 @@ Filters match specific fields or properties.
 
 Supported filters are:
 
-``-title <value>``
+``-title <value>...``
     Match title against ``<value>``.
 
-``-tag <value>``
+``-tag <value>...``
     Match tags against ``<value>``.
 
 ``-during <range>``
