@@ -116,7 +116,9 @@ RETURN_JSX_BEGIN
     <Post { ...{ post } } />
   )) : undefined }
   </ul>
-  <Credit/>
+  { post_list && !loading ? (
+    <Credit/>
+  ) : undefined }
 </main>
 RETURN_JSX_END
 }
