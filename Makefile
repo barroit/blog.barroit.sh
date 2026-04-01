@@ -6,6 +6,9 @@ m4 := printf 'changequote([[, ]])' | $(m4) - -Uformat
 # export DEV=http://$(./scripts/lan-ip.py):3939
 m4 += $${DEV:+-DDEV=$$DEV}
 
+jison ?= jison
+jison += --module-type js
+
 esbuild ?= esbuild
 esbuild += --bundle --format=esm
 

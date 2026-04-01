@@ -2,7 +2,7 @@
 
 onchange-src += lib/**/*
 
-lib-src := $(shell find lib -type f)
+lib-src := $(shell find lib -name '*.jsx' -or -name '*.js')
 lib-helper := $(wildcard lib/*.m4)
 lib-m4 := $(addprefix $(m4dir)/,$(lib-src))
 
