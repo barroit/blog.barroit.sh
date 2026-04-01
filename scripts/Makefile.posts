@@ -56,7 +56,8 @@ $(post_index): $(posts-m4) $(post_master)
 	$(sphinx) --conf-dir sphinx $(post_m4dir) $(postdir)
 
 	mkdir -p $(pubdir)/math
-	cp $(postdir)/_images/math/* $(pubdir)/math
+	test -d $(postdir)/_images/math && \
+	cp $(postdir)/_images/math/* $(pubdir)/math || true
 
 $(posts-o): $(post_index)
 
