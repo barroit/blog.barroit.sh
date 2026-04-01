@@ -5,7 +5,7 @@ onchange-src += index.jsx page/*.jsx
 page-src := index.jsx $(wildcard page/*.jsx)
 page-m4 := $(addprefix $(m4dir)/,$(page-src))
 
-clean += $(page-m4)
+clean += $(page-m4) $(m4dir)/page/search_parser.js*
 
 $(m4dir)/page/search_parser.js: parser/search.y parser/search.l
 	mkdir -p $(@D)
