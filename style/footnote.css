@@ -14,3 +14,7 @@
 #post :is(.footnote, .citation) {
 	@apply text-gray-600;
 }
+
+#post .footnote-reference {
+	@apply -ml-[.15rem];
+}

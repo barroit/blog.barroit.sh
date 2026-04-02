@@ -50,6 +50,7 @@ function Post({ post })
 	const timezone = post.modify.split('+')[1]
 
 	const placeholder = [ ...post.title ].slice(0, 4).join('')
+	const [ _, ...tags ] = post.tag
 
 RETURN_JSX_BEGIN
 <li class='w-fit flex gap-x-9'>
@@ -73,7 +74,7 @@ RETURN_JSX_BEGIN
       <Field icon='IMAGES_GOOGLE_FOLDER_SVG'>
         <p>{ cate.master }</p>
       </Field>
-      <Field icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG' class='hidden md:block'>
+      <Field icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG' class='hidden md:flex'>
         <div>
           <span>{ weekday } { time } </span>
           <span class='text-zinc-500'>+{ timezone }</span>

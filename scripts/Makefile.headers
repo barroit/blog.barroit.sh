@@ -4,7 +4,7 @@ onchange-in += _headers
 
 headers-y := $(pubdir)/_headers
 
-distclean += $(headers-y)
+clean += $(headers-y)
 deploy-ready-y += $(headers-y)
 
 $(headers-y): $(pubdir)/%: %
