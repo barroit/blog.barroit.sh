@@ -82,12 +82,14 @@ RETURN_JSX_BEGIN
     </div>
     <Field class='mt-3' icon='IMAGES_GOOGLE_SELL_SVG'>
       <div>
-      { post.tag.map(tag => tag.class ? undefined : (
+      { tags.length ? tags.map(tag => (
         <>
           <span>{ tag.master }</span>
           <span class='last:hidden'>, </span>
         </>
-      )) }
+      )) : (
+        <p>ε</p>
+      ) }
       </div>
     </Field>
     <Field class='mt-3 md:hidden' icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG'>
