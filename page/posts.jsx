@@ -6,17 +6,19 @@
 import { useContext } from 'preact/hooks'
 
 import { PostListContext } from '../index.jsx'
+import SVG from '../lib/svg.jsx'
 import { CenteredLoading } from '../lib/ux.jsx'
 import Header from './header.jsx'
 import Credit from './credit.jsx'
 
 function Field({ children, icon, ...props })
 {
-	APPEND_CLASS(props, 'flex items-center gap-x-2 text-zinc-800 text-sm')
+	APPEND_CLASS(props, 'flex items-center gap-x-2 \
+			     text-zinc-800 dark:text-zinc-200 text-sm')
 
 RETURN_JSX_BEGIN
 <div { ...props }>
-  <img src={ icon } class='select-none h-4' draggable={ 0 }/>
+  <SVG { ...{ icon } } class='size-4 bg-zinc-800 dark:bg-zinc-200'/>
   { children }
 </div>
 RETURN_JSX_END
@@ -56,13 +58,14 @@ RETURN_JSX_BEGIN
 <li class='w-fit flex gap-x-9'>
   <div class='relative hidden md:block'>
     <p>{ mon } { day }</p>
-    <p class='text-right text-sm text-zinc-500'>{ yr }</p>
+    <p class='text-right text-sm text-zinc-500 dark:text-neutral-400'>{ yr }</p>
     <div class='absolute left-2/3 bottom-5 w-[2px] h-7
-                select-none bg-zinc-300'></div>
+                select-none bg-zinc-300 dark:bg-neutral-400'></div>
   </div>
   <a { ...{ href } } class='group pb-4 pr-4 *:not-first:ml-1'>
     <div class='relative'>
-      <div class='absolute bottom-0 border-b-2 border-zinc-300'>
+      <div class='absolute bottom-0 border-b-2
+                  border-zinc-300 dark:border-neutral-400'>
         <div class='text-lg invisible'>{ placeholder }</div>
       </div>
       <h2 class='text-lg origin-left transition-transform GROUP_HOT(scale-105)
@@ -77,7 +80,7 @@ RETURN_JSX_BEGIN
       <Field icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG' class='hidden md:flex'>
         <div>
           <span>{ weekday } { time } </span>
-          <span class='text-zinc-500'>+{ timezone }</span>
+          <span class='text-zinc-500 dark:text-neutral-400'>+{ timezone }</span>
         </div>
       </Field>
     </div>
@@ -96,7 +99,7 @@ RETURN_JSX_BEGIN
     <Field class='mt-3 md:hidden' icon='IMAGES_GOOGLE_CALENDAR_TODAY_SVG'>
       <div>
         <span>{ weekday } { time } </span>
-        <span class='text-zinc-500'>+{ timezone }</span>
+        <span class='text-zinc-500 dark:text-neutral-400'>+{ timezone }</span>
       </div>
     </Field>
   </a>

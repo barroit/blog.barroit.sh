@@ -21,7 +21,7 @@ divert(0)dnl
 }
 
 #post p.admonition-title {
-	@apply flex items-center gap-x-2 font-medium;
+	@apply flex items-center gap-x-2 font-medium text-black;
 }
 
 #post p.admonition-title::before {

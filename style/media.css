@@ -16,7 +16,7 @@
 }
 
 #post .math img {
-	@apply mx-auto mb-6;
+	@apply mx-auto mb-6 dark:invert;
 }
 
 #post .sphinx-contrib-video-container {
@@ -40,7 +40,7 @@
 }
 
 #post img.math {
-	@apply inline-block align-baseline;
+	@apply inline-block align-baseline dark:invert;
 }
 
 #post .image-expand {
@@ -50,9 +50,9 @@
 }
 
 #post .image-expand-canvas {
-	@apply m-auto p-2 rounded-full bg-gray-200;
+	@apply m-auto p-2 rounded-full bg-zinc-200;
 }
 
 #post .image-expand-icon {
-	@apply bg-gray-700 size-6 mask-[url(IMAGES_GOOGLE_OPEN_IN_FULL_SVG)];
+	@apply bg-zinc-800 size-6 mask-[url(IMAGES_GOOGLE_OPEN_IN_FULL_SVG)];
 }

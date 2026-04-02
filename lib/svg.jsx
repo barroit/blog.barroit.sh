@@ -3,14 +3,11 @@
  * Copyright 2026 Jiamu Sun <barroit@linux.com>
  */
 
-export default function SVGIcon({ src, ...props })
+export default function SVG({ icon, ...props })
 {
-	APPEND_CLASS(props, 'rounded-full drop-shadow-sm select-none')
+	APPEND_CLASS(props, 'mask-cover mask-(--mask) select-none')
 
 RETURN_JSX_BEGIN
-<div { ...props }>
-  <div class='mask-no-repeat mask-cover mask-(--mask)'
-       style={ { '--mask': `url(${src})` } }></div>
-</div>
+<div style={ { '--mask': `url(${icon})` } } { ...props }></div>
 RETURN_JSX_END
 }

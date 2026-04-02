@@ -7,7 +7,8 @@ import Flick from '../lib/flick.jsx'
 
 export default function Header({ children, nosearch, ...props })
 {
-	APPEND_CLASS(props, 'mb-4 flex justify-between text-zinc-600')
+	APPEND_CLASS(props, 'mb-4 flex justify-between \
+			     text-zinc-600 dark:text-zinc-300')
 
 RETURN_JSX_BEGIN
 <header { ...props }>
@@ -15,7 +16,7 @@ RETURN_JSX_BEGIN
 { !nosearch ? (
   <a href='/search'
      class='p-1 transition-colors underline decoration-transparent
-            HOT(decoration-black)'>
+            HOT(decoration-black) HOT(decoration-white, dark:)'>
     <Flick>search</Flick>
   </a>
 ) : undefined }

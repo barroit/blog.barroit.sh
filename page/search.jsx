@@ -9,6 +9,7 @@ import { PostListContext, PostMapContext } from '../index.jsx'
 import { Button, GobackButton } from '../lib/button.jsx'
 import debounce from '../lib/debounce.js'
 import Dialog from '../lib/dialog.jsx'
+import SVG from '../lib/svg.jsx'
 import { CenteredLoading } from '../lib/ux.jsx'
 import Header from './header.jsx'
 
@@ -284,15 +285,18 @@ RETURN_JSX_BEGIN summary ? (
       { title }
     </span>
   { type ? (
-    <span class='text-xs text-zinc-500'>({ type })</span>
+    <span class='text-xs text-zinc-500 dark:text-neutral-300'>({ type })</span>
   ) : undefined }
   </div>
-  <p class='mt-2 ml-[4ch] text-sm text-zinc-600'>{ summary }</p>
+  <p class='mt-2 ml-[4ch] text-sm text-zinc-600 dark:text-neutral-300'>
+    { summary }
+  </p>
 </a>
 ) : (
 <div>
   <h2 class='truncate'>{ title }</h2>
-  <div class='ml-[4ch] rounded-md bg-gray-200 animate-pulse'>
+  <div class='ml-[4ch] rounded-md bg-gray-200
+              dark:bg-neutral-800 animate-pulse'>
     <p class='invisible'>miku</p>
   </div>
 </div>
@@ -319,12 +323,12 @@ function Input({ ctx, error })
 RETURN_JSX_BEGIN
 <div class='mt-5 w-full flex items-center gap-x-4'>
   <label for='search-input' data-error={ error }
-         class='group flex-1 p-3 flex rounded-md outline-2
-                transition bg-gray-100 shadow-sm outline-transparent
+         class='group flex-1 p-3 flex rounded-md shadow-sm transition
+                bg-gray-100 dark:bg-neutral-600 outline-2 outline-transparent
                 FOCUS_WITHIN(outline-luka-pink) data-error:outline-red-500'>
-    <div class='size-6 bg-black mask-cover transition pointer-events-none
-                mask-[url(IMAGES_GOOGLE_SEARCH_SVG)]
-                GROUP_FOCUS_WITHIN(bg-miku-pink)'></div>
+    <SVG icon='IMAGES_GOOGLE_SEARCH_SVG'
+         class='size-6 bg-zinc-600 dark:bg-zinc-300 transition
+                pointer-events-none GROUP_FOCUS_WITHIN(bg-miku-pink)'/>
     <textarea { ...textarea }
               class='px-3 w-full outline-none resize-none
                      [caret-shape:underscore] caret-miku-cyan'></textarea>
@@ -359,7 +363,7 @@ RETURN_JSX_BEGIN
   <Input { ...{ ctx, error } }/>
 { data ? (
   <div class='mt-2 w-full space-y-5'>
-    <div class='px-2 flex justify-end text-sm text-zinc-700'>
+    <div class='px-2 flex justify-end text-sm text-zinc-700 dark:text-zinc-300'>
     { !error ? (
       <div>
         <span class='font-bold'>{ data[1].length } </span>

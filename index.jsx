@@ -34,7 +34,7 @@ function Root()
 
 RETURN_JSX_BEGIN
 <div class='py-5 px-10 md:mx-auto md:w-2xl xl:w-5xl min-h-screen flex flex-col
-            shadow-md bg-slate-50 space-y-5 *:last:flex-1'>
+            shadow-md bg-slate-50 dark:bg-neutral-900 space-y-5 *:last:flex-1'>
   <LocationProvider>
     <PostListContext value={ [ post_list, post_loading ] }>
       <PostMapContext value={ post_map }>

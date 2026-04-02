@@ -57,15 +57,19 @@ export function NotFoundDialog({ part, content })
 {
 
 RETURN_JSX_BEGIN
-<div class='absolute inset-0 w-screen h-screen flex bg-white'>
+<div class='absolute inset-0 w-screen h-screen flex
+            bg-white dark:bg-neutral-800'>
   <button onclick={ goback }
           class='m-auto p-3 w-75 rounded-lg shadow-sm
-                 transition HOT(bg-slate-100) ACTIVE(scale-90) space-y-5'>
+                 dark:bg-neutral-700 transition
+                 HOT(bg-slate-100) HOT(bg-neutral-500, dark:)
+                 ACTIVE(scale-90) space-y-5'>
     <div class='max-w-75 flex justify-center gap-x-5'>
       <img class='h-16' src='IMAGES_AMALA_FROWN_PNG'/>
       <div class='mt-1 min-w-0 text-left space-y-2'>
         <p class='text-xl'>Unknown { part }</p>
-        <p class='px-1 text-sm text-zinc-700 wrap-break-word'>
+        <p class='px-1 text-sm wrap-break-word
+                  text-zinc-700 dark:text-neutral-300'>
           { content }
         </p>
       </div>

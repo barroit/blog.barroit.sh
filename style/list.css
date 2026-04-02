@@ -16,7 +16,7 @@
 }
 
 #post :is(ul, ol) {
-	@apply pl-5 my-4;
+	@apply pl-5 my-4 dark:marker:text-zinc-100;
 }
 
 #post :is(dt, li::marker) {

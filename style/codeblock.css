@@ -8,7 +8,7 @@
 }
 
 #post :is(code, kbd, blockquote, .highlight, .code-block-caption) {
-	@apply bg-gray-100;
+	@apply bg-zinc-100 dark:bg-neutral-800;
 }
 
 #post :is(blockquote, .highlight) {
@@ -16,7 +16,8 @@
 }
 
 #post code {
-	@apply px-1 rounded-sm border-1 border-gray-200 text-xs;
+	@apply px-1 rounded-sm border text-xs
+	       border-zinc-200 dark:border-neutral-700;
 }
 
 #post .highlight > pre {
@@ -24,13 +25,23 @@
 }
 
 #post kbd {
-	@apply px-1 rounded-sm border-1 border-gray-500 text-xs;
+	@apply px-1 rounded-sm border-1 text-xs
+	       border-zinc-500 dark:border-neutral-600;
 	box-shadow: 0 .0625rem 0 #0003,
-		    inset 0 0 0 .125rem var(--color-gray-100);
+		    inset 0 0 0 .125rem var(--color-zinc-100);
 }
 
+@media (prefers-color-scheme: dark) {
+
+#post kbd {
+	box-shadow: 0 .0625rem 0 #aaaaaa,
+		    inset 0 0 0 .125rem var(--color-neutral-700);
+}
+
+} /* @media (prefers-color-scheme: dark) */
+
 #post blockquote {
-	@apply py-2 px-4 border-l-4 border-gray-200;
+	@apply py-2 px-4 border-l-4 border-zinc-200 dark:border-neutral-400;
 }
 
 #post blockquote .attribution {
@@ -42,15 +53,16 @@
 }
 
 #post .code-block-caption {
-	@apply mt-4 px-3.5 py-2.5 rounded-t-md border-b-1 border-gray-200;
+	@apply mt-4 px-3.5 py-2.5 rounded-t-md border-b-1
+	       border-zinc-200 dark:border-neutral-400;
 }
 
 #post .caption-text, #post figcaption > p {
-	@apply text-sm text-gray-500;
+	@apply text-sm text-zinc-500 dark:text-neutral-400;
 }
 
 #post :is(.highlight, .code-block-caption) {
-	@apply text-gray-800;
+	@apply text-zinc-800 dark:text-neutral-200;
 }
 
 #post .code-block-caption+div > .highlight {
@@ -58,6 +70,15 @@
 }
 
 #post .highlight span.linenos {
-	@apply mr-3.5 pr-3.5 inline-block text-gray-500 select-none;
-	box-shadow: -.0625rem 0 var(--color-gray-500) inset;
+	@apply mr-3.5 pr-3.5 inline-block select-none
+	       text-zinc-500 dark:text-neutral-500;
+	box-shadow: -.0625rem 0 var(--color-zinc-500) inset;
 }
+
+@media (prefers-color-scheme: dark) {
+
+#post .highlight span.linenos {
+	box-shadow: -.0625rem 0 var(--color-neutral-400) inset;
+}
+
+} /* @media (prefers-color-scheme: dark) */

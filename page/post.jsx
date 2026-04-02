@@ -149,7 +149,8 @@ RETURN_JSX_BEGIN post == -1 ? (
   <Content { ...{ post } }/>
 ) : undefined }
   <div class='mt-10'>
-    <div class='w-full h-[2px] select-none bg-zinc-300'></div>
+    <div class='w-full h-[2px] select-none bg-zinc-300 dark:bg-neutral-400'>
+    </div>
     <div class='mt-5 mx-auto max-w-[60ch] flex flex-col md:flex-row
                 justify-between gap-3'>
       <Field icon='IMAGES_GOOGLE_LICENSE_SVG'>CC-BY-NC-4.0</Field>

@@ -11,7 +11,8 @@ import Flick from './flick.jsx'
 export function Button({ children, ...props })
 {
 	APPEND_CLASS(props, 'p-1 transition-colors underline \
-			     decoration-transparent HOT(decoration-black)')
+			     decoration-transparent HOT(decoration-black) \
+			     HOT(decoration-white, dark:)')
 
 RETURN_JSX_BEGIN
 <button { ...props }>

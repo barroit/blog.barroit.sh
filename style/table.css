@@ -12,7 +12,7 @@
 }
 
 #post thead {
-	@apply bg-gray-100;
+	@apply bg-zinc-100 dark:bg-neutral-800;
 }
 
 #post table p {
@@ -20,11 +20,15 @@
 }
 
 #post tr {
-	@apply border-b-1 border-gray-200;
+	@apply border-b;
 }
 
 #post :is(th, td) {
-	@apply px-2 border-x border-gray-200;
+	@apply px-2 border-x;
+}
+
+#post :is(tr, th, td)  {
+	@apply border-zinc-200 dark:border-neutral-700;
 }
 
 #post th {

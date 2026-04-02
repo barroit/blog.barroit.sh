@@ -14,6 +14,7 @@ $(m4dir)/page/search_parser.js: parser/search.y parser/search.l
 
 $(page-m4): $(lib-helper) $(images_asmap)
 
-$(m4dir)/page/credit.jsx: $(fonts_asmap) $(notice_map) $(license_map)
+$(m4dir)/page/credit.jsx: $(fonts_asmap) $(media_asmap) \
+			  $(notice_map) $(license_map)
 
 $(m4dir)/page/search.jsx: %.jsx: %_parser.js

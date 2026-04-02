@@ -4,8 +4,9 @@
  */
 
 #post a {
-	@apply text-blue-600 underline
-	       decoration-gray-200 hover:decoration-gray-400;
+	@apply text-blue-600 dark:text-blue-400 underline transition
+	       decoration-zinc-200 hover:decoration-zinc-500
+	       dark:decoration-neutral-500 dark:hover:decoration-neutral-200;
 }
 
 #post :is(h1, h2, h3, h4, h5, h6,
@@ -14,7 +15,7 @@
 }
 
 #post .headerlink {
-	@apply ml-2 text-gray-300 invisible;
+	@apply ml-2 text-zinc-300 dark:text-neutral-600 transition opacity-0;
 }
 
 #post :is(h1, h2, h3, h4, h5, h6,
@@ -22,12 +23,12 @@
 	  figcaption > p,
 	  dt,
       ):hover > .headerlink {
-	@apply visible;
+	@apply opacity-100;
 }
 
 #post .targeting > :is(h1, h2, h3, h4, h5, h6):first-of-type,
 #post :is(figure).targeting figcaption,
 #post .literal-block-wrapper.targeting .code-block-caption,
 #post table.targeting caption {
-	@apply bg-yellow-100;
+	@apply bg-yellow-100 dark:bg-yellow-900;
 }
