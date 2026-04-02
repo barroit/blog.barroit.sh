@@ -28,7 +28,7 @@ $(style)1: $(style-m4) $(__html-m4) $(page-m4) $(lib-m4)
 
 $(style)1-min: %-min: %
 	$(esbuild) --external:/fonts/* --external:/images/* \
-		   --minify $< --outfile=$@
+		   --loader:.css1=css --minify $< --outfile=$@
 
 $(style): %: %1$(MINIMIZE)
 	cp $< $@
