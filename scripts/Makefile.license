@@ -13,5 +13,5 @@ $(license-y): $(pubdir)/%: %
 	mkdir -p $(@D)
 	cp $< $@
 
-$(license_map): $(license-src)
-	printf '/%s\n' $^ | $(map-license) >$@
+$(license_map): $(license-y)
+	printf '/%s\n' $^ | sed s,/$(pubdir),, | $(map-license) >$@

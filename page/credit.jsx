@@ -42,35 +42,19 @@ RETURN_JSX_BEGIN
 RETURN_JSX_END
 }
 
-function fmt_notice([ path, href ])
+function Link({ path, href })
 {
 
 RETURN_JSX_BEGIN
-<>
-  <p>{ path }</p>
-  <a class='px-1' { ...{ href } }>
-    <Flick>README</Flick>
-  </a>
-</>
-RETURN_JSX_END
-}
-
-function fmt_license([ path, href ])
-{
-
-RETURN_JSX_BEGIN
-<div>
-  <a class='text-indigo-700' { ...{ href } }>
-    <Flick>{ path }</Flick>
-  </a>
-</div>
+<a class='block text-indigo-700 underline decoration-transparent
+          transition HOT(decoration-black)' { ...{ href } } target='_blank'>
+  <Flick>{ path }</Flick>
+</a>
 RETURN_JSX_END
 }
 
 export default function Credit()
 {
-	const notices = notice_map.map(fmt_notice)
-	const licenses = license_map.map(fmt_license)
 
 RETURN_JSX_BEGIN
 <div class='mt-10'>
@@ -95,13 +79,17 @@ RETURN_JSX_BEGIN
     </div>
     <div class='space-y-10 xl:flex gap-y-10 gap-x-20'>
       <List title='Resources'>
-        <div class='grid grid-cols-[auto_1fr] gap-x-6 gap-y-5'>
-          { notices }
+        <div class='space-y-5'>
+        { notice_map.map(([ path, href ]) => (
+          <Link { ...{ path, href } }/>
+        )) }
         </div>
       </List>
       <List title='Licenses'>
         <div class='space-y-5'>
-          { licenses }
+        { license_map.map(([ path, href ]) => (
+          <Link { ...{ path, href } }/>
+        )) }
         </div>
       </List>
     </div>
