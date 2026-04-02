@@ -10,6 +10,7 @@ import { PostListContext, PostMapContext } from '../index.jsx'
 import { GobackButton } from '../lib/button.jsx'
 import Dialog from '../lib/dialog.jsx'
 import { CenteredLoading, NotFoundDialog } from '../lib/ux.jsx'
+import { Field } from './credit.jsx'
 import Header from './header.jsx'
 
 function sanitize_post(post)
@@ -100,7 +101,7 @@ function Content({ post })
 
 RETURN_JSX_BEGIN
 <div ref={ box } id='post'
-     class='mx-auto my-15 max-w-[60ch] font-post tracking-wide'>
+     class='mx-auto mt-15 max-w-[60ch] font-post tracking-wide'>
   <Dialog class='p-10 w-full h-[100dvh]' onclose={ reset_img }>
     <img class='m-auto max-h-full'/>
   </Dialog>
@@ -147,6 +148,16 @@ RETURN_JSX_BEGIN post == -1 ? (
 { post ? (
   <Content { ...{ post } }/>
 ) : undefined }
+  <div class='mt-10'>
+    <div class='w-full h-[2px] select-none bg-zinc-300'></div>
+    <div class='mt-5 mx-auto max-w-[60ch] flex flex-col md:flex-row
+                justify-between gap-3'>
+      <Field icon='IMAGES_GOOGLE_LICENSE_SVG'>CC-BY-NC-4.0</Field>
+      <Field icon='IMAGES_GOOGLE_COPYRIGHT_SVG'>
+        Jiamu Sun {'<39@barroit.sh>'}
+      </Field>
+    </div>
+  </div>
 </main>
 ) RETURN_JSX_END
 }

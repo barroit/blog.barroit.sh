@@ -5,7 +5,7 @@
 
 import Flick from '../lib/flick.jsx'
 
-function Field({ icon, children })
+export function Field({ icon, children })
 { 
 
 RETURN_JSX_BEGIN
@@ -73,6 +73,7 @@ RETURN_JSX_BEGIN
         </Field>
         <Field icon='IMAGES_GOOGLE_BUILD_SVG'>make & m4</Field>
         <Field icon='IMAGES_GOOGLE_ARTICLE_SVG'>sphinx</Field>
+        <Field icon='IMAGES_GOOGLE_DATABASE_SVG'>sqlite3</Field>
         <Field icon='IMAGES_GOOGLE_DNS_SVG'>cloudflare workers</Field>
       </FieldList>
       <div class='w-full h-[2px] select-none bg-zinc-300'></div>
