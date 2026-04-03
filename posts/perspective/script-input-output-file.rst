@@ -17,7 +17,7 @@ In this topic, we focus on scripts that **do not rely on input/output
 filenames**.
 
 A script here is a helper that helps you finish small tasks. These tasks should
-be simple, clear, and strictly stream-oriented. Whether a file or a bounch of
+be simple, clear, and strictly stream-oriented. Whether a file or a bunch of
 files can be considered a script is independent of the language being used, it
 only depends on its purpose and the task it's doing.
 
@@ -29,7 +29,7 @@ shell.
 Benefits of using stdin and stdout
 ----------------------------------
 
-Passing input/output files though arguments/flags has several problems:
+Passing input/output files through arguments/flags has several problems:
 
 * lose the ability to utilize the pipe [#]_
 * script must handle the input/output path components properly
@@ -50,7 +50,7 @@ Doing so makes your script no longer need to:
 * make the input lines a good shape
 * ensure the output directory exists
 
-This drops lots of noises, it makes your script smaller, more predicable, and
+This drops lots of noise, it makes your script smaller, more predictable, and
 more SRP compliant. Furthermore, you can continue to transform the lines after
 the script output and before the redirection. This can even make the script more
 generic, since its output now becomes the intersection of two expected outputs.
