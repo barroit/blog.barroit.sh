@@ -8,7 +8,7 @@ posts-src := $(shell find posts -type f -name '*.rst' -or -name 'README.txt')
 posts-helper := $(wildcard posts/*.m4)
 posts-m4 := $(addprefix $(m4dir)/,$(posts-src))
 
-posts-i := $(posts-src:.jp.rst=.rst)
+posts-i := $(posts-src:.ja.rst=.rst)
 posts-i := $(posts-i:.rst=.html)
 posts-i += $(patsubst %.html,%.text,$(filter %.html,$(posts-i)))
 posts-i += $(patsubst %.html,%.block,$(filter %.html,$(posts-i)))
@@ -90,7 +90,7 @@ $(post_list-o): $(posts_asmap) $(post_list-o)1
 
 $(word_index-o): $(post_index)
 	printf '%s' '.alltitles |= walk(if . == null then "" else . end) | ' \
-		    '.docnames |= map(rtrimstr(".jp"))' | \
+		    '.docnames |= map(rtrimstr(".ja"))' | \
 	jq -cf /dev/stdin $< >$@
 
 $(post_map-o): $(post_list-o)
