@@ -86,7 +86,7 @@ RETURN_JSX_BEGIN
     </div>
     <Field class='mt-3' icon='IMAGES_GOOGLE_SELL_SVG'>
       <div>
-      { tags.length ? tags.map(tag => (
+      { tags.length ? tags.map(tag => tag.class ? undefined : (
         <>
           <span>{ tag.master }</span>
           <span class='last:hidden'>, </span>
