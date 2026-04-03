@@ -18,7 +18,7 @@ function Field({ children, icon, ...props })
 
 RETURN_JSX_BEGIN
 <div { ...props }>
-  <SVG { ...{ icon } } class='size-4 bg-zinc-800 dark:bg-zinc-200'/>
+  <SVG { ...{ icon } } class='shrink-0 size-4 bg-zinc-800 dark:bg-zinc-200'/>
   { children }
 </div>
 RETURN_JSX_END
