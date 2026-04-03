@@ -16,10 +16,10 @@ Script Definition
 In this topic, we focus on scripts that **do not rely on input/output
 filenames**.
 
-A script is a helper that helps you finish small tasks. These tasks should be
-simple and clear. Whether a file or a bounch of files can be considered a script
-is independent of the language being used, it only depends on its purpose and
-the task it's doing.
+A script here is a helper that helps you finish small tasks. These tasks should
+be simple, clear, and strictly stream-oriented. Whether a file or a bounch of
+files can be considered a script is independent of the language being used, it
+only depends on its purpose and the task it's doing.
 
 A test framework written in shell language is not a script. An executable
 compiled and linked by gcc and bfd can be treated as a script if it behaves
