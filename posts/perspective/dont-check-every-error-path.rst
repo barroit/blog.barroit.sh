@@ -2,9 +2,9 @@
 
 .. tag:: programming, maintainability, coding-style, pragmatism, srp
 
-========================================
-You don't need to check every error path
-========================================
+============================
+Don't check every error path
+============================
 
 As I read more and more other people's code, I found that lots of people are
 happy to check every error path. However, most of these checks are redundant and
