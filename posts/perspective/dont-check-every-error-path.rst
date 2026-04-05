@@ -1,6 +1,6 @@
 .. SPDX-License-Identifier: CC-BY-NC-4.0
 
-.. tag:: programming, maintainability, coding-style, pragmatism, srp
+.. tag:: programming, maintainability, srp
 
 ============================
 Don't check every error path

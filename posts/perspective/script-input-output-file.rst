@@ -1,6 +1,6 @@
 .. SPDX-License-Identifier: CC-BY-NC-4.0
 
-.. tag:: programming, maintainability, coding-style, srp, script
+.. tag:: programming, maintainability, srp, script
 
 ==========================================
 Script input/output should be stdin/stdout
