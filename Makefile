@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 m4 ?= m4
-m4 := printf 'changequote([[, ]])' | $(m4) - -Uformat
+m4 := printf 'changequote([[, ]])\nchangecom' | $(m4) - -Uformat
 
 # export DEV=http://$(./scripts/lan-ip.py):3939
 m4 += $${DEV:+-DDEV=$$DEV}
