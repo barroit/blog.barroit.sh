@@ -71,6 +71,7 @@ function Content({ post })
 		let anchor
 		let media
 
+		C(box).replaceChildren()
 		C(box).insertAdjacentHTML('afterbegin', post)
 
 		media = C(box).getElementsByTagName('img')
@@ -97,11 +98,11 @@ function Content({ post })
 
 		PAGE_ON_EVENT('hashchange', find_active_anchor_fn)
 		return () => cleanup.forEach(c => c())
-	}, [])
+	}, [ post ])
 
 RETURN_JSX_BEGIN
-<div ref={ box } id='post'
-     class='mx-auto mt-15 max-w-[60ch] font-post tracking-wide'>
+<div id='post' class='mx-auto mt-15 max-w-[60ch] font-post tracking-wide'>
+  <div ref={ box }></div>
   <Dialog class='p-10 w-full h-[100dvh]' onclose={ reset_img }>
     <img class='m-auto max-h-full'/>
   </Dialog>
@@ -135,7 +136,7 @@ export default function Post()
 
 		fetch(post_meta.html).then(res => res.text())
 				     .then(sanitize_post).then(set_post)
-	}, [ meta_loading ])
+	}, [ meta_loading, params.class, params.slug ])
 
 RETURN_JSX_BEGIN post == -1 ? (
 <NotFoundDialog part='Slug' content={ params.slug }/>
