@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-onchange-src += posts/**/*
+onchange-src += posts/**/*.rst
 
 postdir := $(objtree)/posts
 
