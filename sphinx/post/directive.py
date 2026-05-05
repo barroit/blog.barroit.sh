@@ -4,6 +4,7 @@
 import json
 import os
 import sqlite3
+import sys
 
 from sphinx.util.docutils import SphinxDirective
 
@@ -64,6 +65,13 @@ class tag_directive(SphinxDirective):
 			aliases = json.loads(res['aliases'])
 
 			tags.append(res['id'])
+
+			if len(aliases) == 0:
+				print('\n\033[31mfatal:\033[0m ', \
+				      file = sys.stderr, end='')
+				print(f"id '{id}' is missing in tag.db", \
+				      file = sys.stderr)
+				exit(1)
 
 			if aliases[0]:
 				tags.extend(aliases)
