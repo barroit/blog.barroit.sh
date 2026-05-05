@@ -30,6 +30,7 @@ ffmpeg += -v error
 onchange ?= onchange
 concurrently ?= concurrently
 wrangler ?= wrangler
+caddy ?= caddy
 
 lan-ip      := ./scripts/lan-ip.py
 list-posts  := ./scripts/list-posts.sh
@@ -112,10 +113,17 @@ hot-build: deploy-ready
 	$(onchange) $(patsubst %,'%',$(onchange-src)) -- $(MAKE) deploy-ready
 
 hot-host:
-	$(wrangler) dev --live-reload --ip=$$($(lan-ip)) --port=3939
+	$(wrangler) dev --live-reload --ip=127.0.0.1 --port=3901
+
+hot-proxy:
+	$(caddy) reverse-proxy --from http://$$($(lan-ip)):3939 \
+			       --to 127.0.0.1:3901 \
+			       --header-up "Host: 127.0.0.1:3901" \
+			       --header-up "Origin: http://127.0.0.1:3901"
 
 hot-dev: deploy-ready
-	$(concurrently) '$(MAKE) hot-build' '$(MAKE) hot-host'
+	$(concurrently) '$(MAKE) hot-build' \
+			'$(MAKE) hot-host' '$(MAKE) hot-proxy'
 
 host:
 	$(wrangler) dev --ip=$$($(lan-ip)) --port=3939
